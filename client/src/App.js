@@ -1,14 +1,25 @@
 import './App.css';
-// import Cart from './Cart';
-// import Login from './Login';
+import Cart from './Cart';
+import Product from './Product';
 import Home from './Home';
-// import Product from './Product';
-// import Register from './Register';
+import ProductList from './ProductList';
+import Register from './Register';
+import Login from './Login';
+import{BrowserRouter,Routes,Route} from "react-router-dom"
 
 function App() {
   return (
     <>
-    <Home/>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home/>}/>
+        <Route path="/products/:id" element={<ProductList/>}/>
+        <Route path="/product/:id" element={<Product/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
+        <Route path="/cart" element={<Cart/>}/>
+      </Routes>
+    </BrowserRouter>
     </>
   );
 }

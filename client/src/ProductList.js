@@ -38,7 +38,7 @@ const ProductList = () => {
         <FilterContainer>
             <Filter><Text>Filter Products:</Text>
             <Select>
-                <Option disabled  >Color</Option>
+                <Option disabled selected>Color</Option>
                 <Option>White</Option>
                 <Option>Black</Option>
                 <Option>Blue</Option>
@@ -46,7 +46,7 @@ const ProductList = () => {
                 <Option>Green</Option>
             </Select>
             <Select>
-                <Option disabled  >Size</Option>
+                <Option disabled selected >Size</Option>
                 <Option>XS</Option>
                 <Option>S</Option>
                 <Option>M</Option>
@@ -56,7 +56,7 @@ const ProductList = () => {
             </Filter>
             <Filter><Text>Sort Products:</Text>
             <Select>
-                <Option disabled  >Newest</Option>
+                <Option disabled selected >Newest</Option>
                 <Option>Price (asc)</Option>
                 <Option>Price (desc)</Option>
             </Select>
