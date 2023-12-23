@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
+import { Link } from 'react-router-dom';
 
 const Info=styled.div`
 opacity:0;
@@ -59,6 +60,7 @@ align-items:center;
 margin:10px;
 cursor:pointer;
 transition:all 0.5s ease-in-out;
+color:inherit;
 
 &:hover{
   background:#e9f5f5;
@@ -74,9 +76,11 @@ const ProductItem = ({item}) => {
       <Icon>
         <ShoppingCartOutlinedIcon/>
       </Icon>
+      <Link to={`/product/${item._id}`}>
       <Icon>
         <SearchOutlinedIcon/>
       </Icon>
+      </Link>
       <Icon>
         <FavoriteBorderOutlinedIcon/>
       </Icon>

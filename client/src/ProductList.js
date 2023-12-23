@@ -47,7 +47,7 @@ const ProductList = () => {
     <Container>
         <Navbar/>
         <Announcement/>
-        <Title>Dresses</Title>
+        <Title>{category}</Title>
         <FilterContainer>
             <Filter><Text>Filter Products:</Text>
             <Select name='color' onChange={handleFilters}>

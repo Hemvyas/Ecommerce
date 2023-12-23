@@ -38,10 +38,10 @@ getProducts();
   },[category,products,filters])
 
   useEffect(()=>{
-    if (sort=="newest") {
+    if (sort==="newest") {
       setFilteredProducts(item=>[...item].sort((a,b)=>a.createdAt-b.createdAt))
     }
-    else if(sort=="asc"){
+    else if(sort==="asc"){
       setFilteredProducts(item=>[...item].sort((a,b)=>a.price-b.price))
     }
     else{

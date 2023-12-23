@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import Navbar from './components/Navbar'
 import Announcement from './components/Announcement'
@@ -6,6 +6,8 @@ import Newsletter from './components/Newsletter'
 import Footer from './components/Footer'
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { useLocation } from 'react-router-dom'
+import axios from 'axios'
 const Container=styled.div`
 
 `
@@ -51,15 +53,15 @@ font-weight:200;
 `
 const FilterColor=styled.div`
 width:20px;
-heigth:20px;
+height:20px;
 border-radius:50%;
-background:${props=>props.color}
+background:${props=>props.color};
 margin:0px 5px;
 cursor:pointer;
 `
 const FilterSize=styled.select`
 margin-left:10px;
-padding:5px;
+padding:6px;
 `
 const AddContainer=styled.div`
 display:flex;
@@ -97,48 +99,76 @@ const FilterSizeOption=styled.option`
 `
 
 const Product = () => {
+  const location=useLocation();
+  const id=location.pathname.split("/")[2];
+  const [product,setProduct]=useState({});
+  const [quantity,setQuantity]=useState(1);
+  const [color,setColor]=useState(" ");
+   const [size,setSize]=useState(" ");
+
+  useEffect(()=>{
+    const fetchProduct=async()=>{
+      try {
+        const res=await axios.get(`http://localhost:5000/api/product/${id}`);
+        setProduct(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchProduct();
+  },[id])
+
+  const handleQuantity=(type)=>{
+    if(type==="inc"){
+     setQuantity(quantity+1)
+      }else {
+        quantity>1 &&  setQuantity(quantity-1)
+        }
+  }
+const handleclick=()=>{
+  alert("Added to cart");
+}
   return (
     <Container>
         <Navbar/>
         <Announcement/>
         <Wrapper>
             <ImgContainer>
-              <Image src="https://www.jiomart.com/images/product/original/rvowvf0akl/eyebogler-men-s-polo-neck-regular-fit-half-sleeves-colorblocked-teal-t-shirt-product-images-rvowvf0akl-0-202211051905.jpg?im=Resize=(500,630)"/>
+              <Image src={product.img}/>
             </ImgContainer>
           <Info>
             <Title>
-              Polo T-Shirt
+              {product.title}
             </Title>
             <Desc>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed posuere tristique arcu, non facil
+             {product.desc}
             </Desc>
-            <Price>$ 30</Price>
+            <Price>$ {product.price}</Price>
             <FilterContainer>
               <Filter>
                 <FilterTitle>Color</FilterTitle>
-                <FilterColor color="black"/>
-                <FilterColor color="blue"/>
-                <FilterColor color="gray"/>
+                {product.color && <FilterColor color={product.color} key={product.color} 
+                  onClick={()=>setColor(product.color)}
+                />}
               </Filter>
 
               <Filter>
                 <FilterTitle>Size</FilterTitle>
-                <FilterSize>
-                  <FilterSizeOption>XS</FilterSizeOption>
-                  <FilterSizeOption>S</FilterSizeOption>
-                  <FilterSizeOption>M</FilterSizeOption>
-                  <FilterSizeOption>L</FilterSizeOption>
-                  <FilterSizeOption>XL</FilterSizeOption>
+                <FilterSize onChange={(e)=>setSize(e.target.value)}>
+                {product.size && <FilterSizeOption >{product.size}</FilterSizeOption>}
                 </FilterSize>
+
+
               </Filter>
             </FilterContainer>
             <AddContainer>
               <Quantity>
-                <RemoveOutlinedIcon/>
-                <Total>1</Total>
-                <AddOutlinedIcon/>                
+                <RemoveOutlinedIcon onClick={()=>handleQuantity("dec")}/>
+                <Total>{quantity}</Total>
+                <AddOutlinedIcon onClick={()=>handleQuantity("inc")}/>                
               </Quantity>
-              <Button>Add To Cart</Button>
+              <Button onClick={handleclick}>Add To Cart</Button>
             </AddContainer>
           </Info>
         </Wrapper>
