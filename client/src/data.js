@@ -33,17 +33,22 @@ export const categories=[
     {
         id:1,
         img:"https://image.made-in-china.com/202f0j00meJYjkMKpIbW/Sports-Wear-Black-High-Collar-Men-Jacket-Thumb-Hole-Hoodie.webp",
-        title:"ThumbHole Jacket"
+        title:"ThumbHole Jacket",
+        category:"man"
     },
     {
         id:2,
         img:"https://assets.ajio.com/medias/sys_master/root/20230901/tv2M/64f1fa36afa4cf41f59d677c/-473Wx593H-442295525-olivegreen-MODEL.jpg",
-        title:"Cargo Joggers"
+        title:"Cargo Joggers",
+        category:"joggers"
+
     },
     {
         id:3,
         img:"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcROgaxb_Hx-7Ut6pyy-ghW30E-eCEbTXpKrnHXKB8TjkNSJmUHTgyVCN6z85YkqNq9gOkQ&usqp=CAU",
-        title:"Plain Hoodies"
+        title:"Plain Hoodies",
+        category:"hoodies"
+        
     },
 ]
 
