@@ -115,7 +115,7 @@ font-size:${props=>props.type==="total" && "25px"};
 
 const Cart = () => {
 const cart=useSelector(state=>state.cart)
-console.log(cart);
+const quantity=useSelector(state=>state.cart.quantity)
     
   return (
     <Container>
@@ -126,7 +126,7 @@ console.log(cart);
 <Top>
     <Button>CONTINUE SHOPPING</Button>
     <Content>
-    <Text>Shopping Bag(2)</Text>
+    <Text>Shopping Bag({quantity})</Text>
     <Text>Your Wishlist(0)</Text>
     </Content>
     <Button type='filled'>CHECKOUT NOW</Button>
