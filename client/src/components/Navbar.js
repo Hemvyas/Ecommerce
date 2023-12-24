@@ -4,6 +4,7 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Badge } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Container=styled.div`
 height:60px;
@@ -106,8 +107,8 @@ const Navbar = () => {
 
   
           
-  const cart=useSelector(state=>state.cart);
-  console.log(cart);
+  const quantity=useSelector(state=>state.cart.quantity);
+  
   return (
     <Container scrolled={scrolled}>
 
@@ -129,11 +130,13 @@ const Navbar = () => {
     <Right>
     <Cred>Register</Cred>
     <Cred>Sign In</Cred>
+    <Link to='/cart'>
     <Cred>
- <Badge badgeContent={5} color="primary">
+ <Badge badgeContent={quantity} color="primary">
   <ShoppingCartOutlinedIcon color="action" />
     </Badge>    
     </Cred>
+    </Link>
    
     </Right>
     </Wrapper>

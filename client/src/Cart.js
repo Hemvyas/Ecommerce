@@ -5,6 +5,7 @@ import Footer from "./components/Footer"
 import styled from 'styled-components'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
+import { useSelector } from 'react-redux'
 const Container=styled.div``
 const Wrapper=styled.div`
 padding:20px;
@@ -113,7 +114,8 @@ font-size:${props=>props.type==="total" && "25px"};
 `
 
 const Cart = () => {
-
+const cart=useSelector(state=>state.cart)
+console.log(cart);
     
   return (
     <Container>
@@ -131,51 +133,35 @@ const Cart = () => {
 </Top>
 <Bottom>
     <Info>
+
+    {cart.products.map((product)=>(
     <Product>
     <ProductInfo>
-    <Image src="https://www.thule.com/-/p/BqQQ3zv_GsS7myXOsY5vM26sDG7AlIzKP_qxV_zBNXA/rs:fit/h:991/cb:1.4/w:991/plain/approved/std.lang.all/25/72/1382572.png"/>
+    <Image src={product.img}/>
     <Details>
-        <Name><b>Product:</b>Backpack</Name>
-        <ID><b>ID:</b>1231</ID>
-        <Color color='black'/>
-        <Size><b>Size:</b>26L</Size>
+        <Name><b>Product:</b>{product.title}</Name>
+        <ID><b>ID:</b>{product._id}</ID>
+        <Color color={product.color}/>
+        <Size><b>Size:</b>{product.size}</Size>
     </Details>
     </ProductInfo>
     <Price>
         <Quantity>
             <AddOutlinedIcon/>
-            <ProductQuantity>2</ProductQuantity>
+            <ProductQuantity>{product.quantity}</ProductQuantity>
             <RemoveOutlinedIcon/>
         </Quantity>
-        <ProductPrice>$ 40</ProductPrice>
+        <ProductPrice>$ {product.price *product.quantity}</ProductPrice>
     </Price>
-    </Product>
+    </Product>))}
+
 <Hr/>
-    <Product>
-    <ProductInfo>
-    <Image src="https://www.thule.com/-/p/BqQQ3zv_GsS7myXOsY5vM26sDG7AlIzKP_qxV_zBNXA/rs:fit/h:991/cb:1.4/w:991/plain/approved/std.lang.all/25/72/1382572.png"/>
-    <Details>
-        <Name><b>Product:</b>Backpack</Name>
-        <ID><b>ID:</b>1231</ID>
-        <Color color='black'/>
-        <Size><b>Size:</b>26L</Size>
-    </Details>
-    </ProductInfo>
-    <Price>
-        <Quantity>
-            <AddOutlinedIcon/>
-            <ProductQuantity>2</ProductQuantity>
-            <RemoveOutlinedIcon/>
-        </Quantity>
-        <ProductPrice>$ 40</ProductPrice>
-    </Price>
-    </Product>
     </Info>
     <Summary>
         <SummaryTitle>ORDER SUMMARY</SummaryTitle>
         <SummaryItem>
             <SummaryText>Subtotal</SummaryText>
-            <SummaryPrice>$ 60</SummaryPrice>
+            <SummaryPrice>$ {cart.total}</SummaryPrice>
         </SummaryItem>
         <SummaryItem>
             <SummaryText>Estimated Shipping</SummaryText>
@@ -187,7 +173,7 @@ const Cart = () => {
         </SummaryItem>
         <SummaryItem type="total">
             <SummaryText>Total</SummaryText>
-            <SummaryPrice>$ 52</SummaryPrice>
+            <SummaryPrice>$ {cart.total}</SummaryPrice>
         </SummaryItem>
         <Button>CHECKOUT NOW</Button>
     </Summary>

@@ -8,6 +8,8 @@ import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
+import { addToCart } from './redux/cartSlice'
+import { useDispatch } from 'react-redux'
 const Container=styled.div`
 
 `
@@ -105,6 +107,7 @@ const Product = () => {
   const [quantity,setQuantity]=useState(1);
   const [color,setColor]=useState(" ");
    const [size,setSize]=useState(" ");
+   const dispatch=useDispatch();
 
   useEffect(()=>{
     const fetchProduct=async()=>{
@@ -127,7 +130,7 @@ const Product = () => {
         }
   }
 const handleclick=()=>{
-  alert("Added to cart");
+ dispatch(addToCart({...product,quantity,color,size}));
 }
   return (
     <Container>
