@@ -9,6 +9,7 @@ const userRoute = require("./routes/userRoute");
 const productRoute=require("./routes/productRoute");
 const cartRoute= require("./routes/cartRoute");
 const orderRoute= require("./routes/orderRoute");
+const Product=require("./models/Product")
 dotenv.config();
 
 
@@ -26,6 +27,18 @@ console.log("DB Connected");
 }).catch((err)=>{
 console.log(err);
 })
+
+
+const productsData = require('../client/src/productData');
+Product.insertMany(productsData)
+  .then(() => {
+    console.log('Data inserted successfully');
+    mongoose.connection.close();
+  })
+  .catch((error) => {
+    console.error('Error inserting data:', error);
+    mongoose.connection.close();
+  });
 
 app.listen(process.env.PORT,()=>{
     console.log("Port Started at 5000");

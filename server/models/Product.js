@@ -4,16 +4,19 @@ const productSchema=new mongoose.Schema(
     {
         title:{
             type:String,
-            unique:true,
             required:true
         },
         desc:{
             type:String,
             required:true
         },
-        img:{
+        mainImg:{
             type:String,
-            required:true
+            required:true,
+        },
+        colorImg:{
+            type:String,
+            required:true,
         },
         size:{
             type:String,
@@ -21,9 +24,13 @@ const productSchema=new mongoose.Schema(
         color:{
             type:String,
         },
+        type:{
+            type:String,
+        },
         price:{
             type:Number,
-            required:true
+            required:true,
+            min:0
         },
         categories:{
             type:Array,
