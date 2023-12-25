@@ -2,7 +2,7 @@
     const data=[
     {
     "Id": 1,
-    "title": "Tutoko Softshell Hoodie",
+    "title": "Tutoko Softshell Hoodie-Mens",
     "types": "JACKETS",
     "categories": "Mens",
     "color": "Black",
