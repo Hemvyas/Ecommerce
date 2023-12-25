@@ -14,6 +14,16 @@ const Products = ({category,filters,sort}) => {
 
   const [products,setProducts]=useState([]);
   const [filteredProducts,setFilteredProducts]=useState([]);
+  const [randomProducts,setRandomProducts]=useState([]);
+
+  useEffect(() => {
+    const getRandomProducts=async()=>{
+      const res=await axios.get("http://localhost:5000/api/category/random");
+      setRandomProducts(res.data);
+    }
+    getRandomProducts();
+  }, [])
+  
 
   useEffect(()=>{
     const getProducts=async()=>{
@@ -21,13 +31,15 @@ const Products = ({category,filters,sort}) => {
         const res= await axios.get(category ? `http://localhost:5000/api/product?category=${category}` 
                                             : "http://localhost:5000/api/product");
         setProducts(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       } catch (error) {
         console.log(error);
       }
     }
 getProducts();
   },[category])
+
+
 
   useEffect(()=>{
      category && setFilteredProducts(
@@ -54,7 +66,7 @@ getProducts();
     {category ? filteredProducts.map(item=>(
         <ProductItem item={item} key={item.id}/>
     )):
-    product.slice(0,8).map(item=>(
+    randomProducts.map(item=>(
         <ProductItem item={item} key={item.id}/>
     ))}
     </Container>

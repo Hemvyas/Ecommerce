@@ -47,6 +47,7 @@ position:absolute;
 const Image=styled.img`
 height:75%;
 z-index:1;
+object-fit:cover;
 `
 
 const Icon=styled.div`
@@ -71,7 +72,7 @@ const ProductItem = ({item}) => {
   return (
     <Container>
     <Circle/>
-    <Image src={item.img}/>
+    <Image src={item.mainImg}/>
     <Info>
       <Icon>
         <ShoppingCartOutlinedIcon/>
