@@ -84,17 +84,7 @@ router.get('/',async(req,res)=>{
 })
 
 
-// router.get('/category/:category', async (req, res) => {
-//   const qCategory = req.params.category
-//   try {
-//     const products = await Product.find({
-//       categories: { $in: [qCategory] },
-//     }).limit(1);
-//     res.status(200).json(products);
-//   } catch (error) {
-//     res.status(500).json(error);
-//   }
-// });
+
 
 
 

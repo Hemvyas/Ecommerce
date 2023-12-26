@@ -19,17 +19,14 @@ const Categories = () => {
     const getkidsProducts=async()=>{
       const res=await axios.get("http://localhost:5000/api/category/kids");
       setKids(res.data)
-      console.log(res.data);
     }
     const getmensProducts=async()=>{
       const res=await axios.get("http://localhost:5000/api/category/mens");
       setMens(res.data)
-      console.log(res.data);
     }
     const getwomensProducts=async()=>{
       const res=await axios.get("http://localhost:5000/api/category/womens");
       setWomens(res.data);
-      console.log(res.data);
     }
     getkidsProducts();
     getmensProducts();

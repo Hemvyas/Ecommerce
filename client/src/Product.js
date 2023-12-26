@@ -114,7 +114,7 @@ const Product = () => {
       try {
         const res=await axios.get(`http://localhost:5000/api/product/${id}`);
         setProduct(res.data);
-        console.log(res.data);
+        // console.log(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -138,7 +138,7 @@ const handleclick=()=>{
         <Announcement/>
         <Wrapper>
             <ImgContainer>
-              <Image src={product.img}/>
+              <Image src={product.mainImg}/>
             </ImgContainer>
           <Info>
             <Title>

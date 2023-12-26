@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import Navbar from "./components/Navbar"
 import Announcement from "./components/Announcement"
 import Products from "./components/Products"
@@ -6,6 +6,7 @@ import Newsletter from "./components/Newsletter"
 import Footer from "./components/Footer"
 
 import styled from 'styled-components'
+import axios from 'axios';
 import { useLocation } from 'react-router-dom'
 
 const Container=styled.div``
@@ -33,52 +34,112 @@ const Option=styled.option`
 const ProductList = () => {
     const location=useLocation();
     const category = location.pathname.split('/')[2];
-    const [filter,setFilter]=useState({})
-    const [sort,setSort]=useState("newest")
+    // const [filter,setFilter]=useState({})
+    // const [sort,setSort]=useState("newest")
 
-    const handleFilters=(e)=>{
-        const value=e.target.value;
-        setFilter({
-            ...filter,
-            [e.target.name]:value.toLowerCase(),
-        })
-    }
+    // const handleFilters=(e)=>{
+    //     const value=e.target.value;
+    //     setFilter({
+    //         ...filter,
+    //         [e.target.name]:value.toLowerCase(),
+    //     })
+    // }
+
+    const [products,setProducts] = useState([])
+
+    useEffect(() => {
+        const getProducts=async()=>{
+            const res=await axios.get(`http://localhost:5000/api/category/${category}`);
+            setProducts(res.data)
+            console.log(res.data);
+        }
+        getProducts();
+    }, [])
+    
+
     return (
+
+
+    // <Container>
+    //     <Navbar/>
+    //     <Announcement/>
+    //     <Title>{category}</Title>
+    //     <FilterContainer>
+    //         <Filter><Text>Filter Products:</Text>
+    //         <Select name='color' onChange={handleFilters}>
+    //             <Option disabled selected>Color</Option>
+    //             <Option>White</Option>
+    //             <Option>Black</Option>
+    //             <Option>Blue</Option>
+    //             <Option>Yellow</Option>
+    //             <Option>Green</Option>
+    //         </Select>
+    //         <Select name='size' onChange={handleFilters}>
+    //             <Option disabled selected >Size</Option>
+    //             <Option>XS</Option>
+    //             <Option>S</Option>
+    //             <Option>M</Option>
+    //             <Option>L</Option>
+    //             <Option>XL</Option>
+    //         </Select>
+    //         </Filter>
+    //         <Filter><Text>Sort Products:</Text>
+    //         <Select onChange={(e)=>setSort(e.target.value)}>
+    //             <Option selected value="newest" >Newest</Option>
+    //             <Option value="asc">Price (asc)</Option>
+    //             <Option value="desc">Price (desc)</Option>
+    //         </Select>
+    //         </Filter>
+    //     </FilterContainer>
+    //     <Products category={category} filters={filter} sort={sort}/>
+    //     <Newsletter/>
+    //     <Footer/>
+    // </Container>
+
+
     <Container>
-        <Navbar/>
+     <Navbar/>
         <Announcement/>
-        <Title>{category}</Title>
+        <Title></Title>
         <FilterContainer>
-            <Filter><Text>Filter Products:</Text>
-            <Select name='color' onChange={handleFilters}>
-                <Option disabled selected>Color</Option>
-                <Option>White</Option>
-                <Option>Black</Option>
-                <Option>Blue</Option>
-                <Option>Yellow</Option>
-                <Option>Green</Option>
-            </Select>
-            <Select name='size' onChange={handleFilters}>
-                <Option disabled selected >Size</Option>
-                <Option>XS</Option>
-                <Option>S</Option>
-                <Option>M</Option>
-                <Option>L</Option>
-                <Option>XL</Option>
-            </Select>
-            </Filter>
-            <Filter><Text>Sort Products:</Text>
-            <Select onChange={(e)=>setSort(e.target.value)}>
-                <Option selected value="newest" >Newest</Option>
-                <Option value="asc">Price (asc)</Option>
-                <Option value="desc">Price (desc)</Option>
-            </Select>
-            </Filter>
-        </FilterContainer>
-        <Products category={category} filters={filter} sort={sort}/>
-        <Newsletter/>
-        <Footer/>
+             <Filter><Text>Filter Products:</Text>
+             <Select>
+                 <Option disabled selected>Color</Option>
+                 <Option>White</Option>
+                 <Option>Black</Option>
+                 <Option>Blue</Option>
+                 <Option>Yellow</Option>
+                 <Option>Green</Option>
+             </Select>
+             <Select>
+                 <Option disabled selected >Size</Option>
+                 <Option>XS</Option>
+                 <Option>S</Option>
+                 <Option>M</Option>
+                 <Option>L</Option>
+                 <Option>XL</Option>
+             </Select>
+             </Filter>
+             <Filter><Text>Sort Products:</Text>
+             <Select>
+                 <Option selected value="newest" >Newest</Option>
+                 <Option value="asc">Price (asc)</Option>
+                 <Option value="desc">Price (desc)</Option>
+             </Select>
+             </Filter>
+         </FilterContainer>
+         {
+            products.map((item)=>(
+                <Products key={item.id}/>
+            ))
+         }
+       
+         <Newsletter/>
+         <Footer/>
+
     </Container>
+
+
   )
 }
 

@@ -57,7 +57,9 @@ const CategoryItem = ({item}) => {
         <ColorImg className="colorImg" src={item.colorImg}/>
         <Info>
             <Title>{item.title}</Title>
+            <Link to={`/category/${item.categories}`}>
             <Button>SHOP NOW</Button>
+            </Link>
         </Info>
     </Container>
   )

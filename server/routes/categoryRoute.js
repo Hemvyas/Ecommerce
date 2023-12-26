@@ -37,7 +37,7 @@ router.get("/womens",async(req,res)=>{
 
 router.get('/random',async(req,res)=>{
     try {
-        const randomProducts=await Product.aggregate([{$sample:{size:8}}])
+        const randomProducts=await Product.aggregate([{$sample:{size:10}}])
         res.status(200).json(randomProducts);
     } catch (error) {
         console.log(error);
@@ -45,4 +45,16 @@ router.get('/random',async(req,res)=>{
     }
 })
 
+
+router.get('/:category', async (req, res) => {
+    const qCategory = req.params.category
+    try {
+      const products = await Product.find({
+        categories: { $in: [qCategory] },
+      }).limit(10);
+      res.status(200).json(products);
+    } catch (error) {
+      res.status(500).json(error);
+    }
+  });
 module.exports=router;

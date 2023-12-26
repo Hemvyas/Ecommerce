@@ -25,19 +25,19 @@ const Products = ({category,filters,sort}) => {
   }, [])
   
 
-  useEffect(()=>{
-    const getProducts=async()=>{
-      try {
-        const res= await axios.get(category ? `http://localhost:5000/api/product?category=${category}` 
-                                            : "http://localhost:5000/api/product");
-        setProducts(res.data);
-        // console.log(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-getProducts();
-  },[category])
+//   useEffect(()=>{
+//     const getProducts=async()=>{
+//       try {
+//         const res= await axios.get(category ? `http://localhost:5000/api/product?category=${category}` 
+//                                             : "http://localhost:5000/api/product");
+//         setProducts(res.data);
+//         // console.log(res.data);
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     }
+// getProducts();
+//   },[category])
 
 
 
