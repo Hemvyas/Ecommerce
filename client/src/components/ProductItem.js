@@ -86,7 +86,6 @@ const ProductItem = ({item}) => {
         <FavoriteBorderOutlinedIcon/>
       </Icon>
     </Info>
-
     </Container>
   )
 }

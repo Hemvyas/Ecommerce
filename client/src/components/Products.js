@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import {product} from "../data"
 import styled from 'styled-components'
 import ProductItem from "./ProductItem"
 import axios from "axios"

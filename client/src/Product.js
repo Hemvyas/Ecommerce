@@ -19,12 +19,27 @@ display:flex;
 `
 const ImgContainer=styled.div`
 flex:1;
+position:relative;
+&:hover .colorImg{
+  opacity:1;
+}
 `
 const Image=styled.img`
 width:100%;
 height:90vh;
-object-fit:cover
+object-fit:cover;
 `
+const ColorImg=styled.img`
+width:100%;
+height:90vh;
+object-fit:cover;
+opacity:0;
+position:absolute;
+top:0;
+left:0;
+transition: 0.3s opacity background ease-in-out;
+`
+
 const Title=styled.h1`
 font-weight:200;
 `
@@ -139,6 +154,7 @@ const handleclick=()=>{
         <Wrapper>
             <ImgContainer>
               <Image src={product.mainImg}/>
+              <ColorImg className="colorImg" src={product.colorImg}/>
             </ImgContainer>
           <Info>
             <Title>
