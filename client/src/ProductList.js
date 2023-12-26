@@ -96,10 +96,6 @@ const ProductList = () => {
         setPage(newPage);
       }  
       };
-
-      // console.log('Page:', page);
-      // console.log('Products:', products);
-
       const isNextDisabled = page >= totalPages;
 
 
@@ -157,7 +153,10 @@ const ProductList = () => {
                  <Option>Yellow</Option>
                  <Option>Navy</Option>
                  <Option>Red</Option>
-                 <Option>Charcoal</Option>
+                 <Option>Orange</Option>
+                 <Option>Gold</Option>
+                 <Option>Aqua</Option>
+                 <Option>Gray</Option>
              </Select>
              <Select>
                  <Option disabled selected >Size</Option>
@@ -166,6 +165,16 @@ const ProductList = () => {
                  <Option>M</Option>
                  <Option>L</Option>
                  <Option>XL</Option>
+             </Select>
+             <Select>
+                 <Option disabled selected >Type</Option>
+                 <Option>FLEECE</Option>
+                 <Option> HOODIES</Option>
+                 <Option>JACKETS</Option>
+                 <Option>MERINO</Option>
+                 <Option>PERFORM</Option>
+                 <Option>SWEATS</Option>
+                 <Option>TEES</Option>
              </Select>
              </Filter>
              <Filter><Text>Sort Products:</Text>

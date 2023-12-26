@@ -83,6 +83,23 @@ router.get('/cat/:category', async (req, res) => {
 //     }
 //   });
 
+router.get('/type',async(req,res)=>{
+    try {
+        const typeProduct=await Product.distinct('color');
+        res.status(200).json(typeProduct);
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
+router.get('/color',async(req,res)=>{
+    try {
+        const color=await Product.find({color:Charcoal})
+    } catch (error) {
+        res.status(500).json(error);
+    }
+})
+
 
 
 module.exports=router;
