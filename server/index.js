@@ -10,7 +10,8 @@ const productRoute=require("./routes/productRoute");
 const cartRoute= require("./routes/cartRoute");
 const orderRoute= require("./routes/orderRoute");
 const Product=require("./models/Product")
-const categoryRoute=require("./routes/categoryRoute")
+const categoryRoute=require("./routes/categoryRoute");
+const { default: test } = require("node:test");
 dotenv.config();
 
 
@@ -40,6 +41,10 @@ console.log(err);
 //     console.error('Error inserting data:', error);
 //     mongoose.connection.close();
 //   });
+
+
+
+
 
 app.listen(process.env.PORT,()=>{
     console.log("Port Started at 5000");

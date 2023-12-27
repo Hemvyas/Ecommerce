@@ -10,6 +10,7 @@ import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { addToCart } from './redux/cartSlice'
 import { useDispatch } from 'react-redux'
+import ProductItem from './components/ProductItem'
 const Container=styled.div`
 
 `
@@ -39,14 +40,17 @@ top:0;
 left:0;
 transition: 0.3s opacity background ease-in-out;
 `
-
 const Title=styled.h1`
 font-weight:200;
 `
 const Desc=styled.p`
 margin:20px 0px;
 `
-const Price=styled.span`
+const Types=styled.p`
+font-weight:100;
+font-size:21px;
+`
+const Price=styled.p`
 font-weight:100;
 font-size:40px;
 `
@@ -76,7 +80,7 @@ background:${props=>props.color};
 margin:0px 5px;
 cursor:pointer;
 `
-const FilterSize=styled.select`
+const FilterSize=styled.p`
 margin-left:10px;
 padding:6px;
 `
@@ -114,6 +118,18 @@ font-weight:500;
 const FilterSizeOption=styled.option`
 
 `
+const Products=styled.div`
+display:flex;
+padding:20px;
+flex-wrap:wrap;
+justify-content:space-between;
+`
+const Recommendation=styled.div`
+background:#fbf0f4;
+padding:10px;
+`
+
+
 
 const Product = () => {
   const location=useLocation();
@@ -122,20 +138,36 @@ const Product = () => {
   const [quantity,setQuantity]=useState(1);
   const [color,setColor]=useState(" ");
    const [size,setSize]=useState(" ");
+   const [recomendedProducts,setRecommendedProducts]=useState([]);
    const dispatch=useDispatch();
+
+ 
 
   useEffect(()=>{
     const fetchProduct=async()=>{
       try {
         const res=await axios.get(`http://localhost:5000/api/product/${id}`);
         setProduct(res.data);
-        // console.log(res.data);
       } catch (error) {
         console.log(error);
       }
     }
     fetchProduct();
   },[id])
+
+  useEffect(() => {
+    const recomend=async()=>{
+      try {
+        const res=await axios.get(`http://localhost:5000/api/category/recomend/${id}`);
+        setRecommendedProducts(res.data);
+        console.log(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    recomend();
+  }, [id])
+  
 
   const handleQuantity=(type)=>{
     if(type==="inc"){
@@ -161,8 +193,12 @@ const handleclick=()=>{
               {product.title}
             </Title>
             <Desc>
+            <h4>Description:</h4>
              {product.desc}
             </Desc>
+            <Types>
+         Type:{product.types}
+            </Types>
             <Price>$ {product.price}</Price>
             <FilterContainer>
               <Filter>
@@ -177,8 +213,6 @@ const handleclick=()=>{
                 <FilterSize onChange={(e)=>setSize(e.target.value)}>
                 {product.size && <FilterSizeOption >{product.size}</FilterSizeOption>}
                 </FilterSize>
-
-
               </Filter>
             </FilterContainer>
             <AddContainer>
@@ -191,6 +225,22 @@ const handleclick=()=>{
             </AddContainer>
           </Info>
         </Wrapper>
+
+        <Recommendation>
+        <Title>
+          Recomended Products
+        </Title>
+        <Products>
+          {
+            recomendedProducts.map((item)=>{
+             return <ProductItem item={item} key={item.id}/>
+            })
+          }
+        </Products>
+
+        </Recommendation>
+        
+
         <Newsletter/>
         <Footer/>
     </Container>

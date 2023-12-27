@@ -110,9 +110,7 @@ router.get('/cat/:category', async (req, res) => {
         const decodedFilter = decodeURIComponent(req.query.filter);
         const { color, size, type } = JSON.parse(decodedFilter);
 
-        // Check if either color or type is present
         if (color || type) {
-            // Use $or operator to match either color or type
             filterQuery.$or = [];
 
             if (color) {
@@ -123,14 +121,12 @@ router.get('/cat/:category', async (req, res) => {
                 filterQuery.$or.push({ type });
             }
         }
-
-        // Include size in the filter if present
         if (size) {
             filterQuery.size = size;
         }
     }
 
-    console.log('Filter Query:', filterQuery);
+    // console.log('Filter Query:', filterQuery);
 
     try {
         const validPage = Math.max(page, 1);
@@ -150,6 +146,30 @@ router.get('/cat/:category', async (req, res) => {
         console.log(error);
     }
 });
+
+router.get('/recomend/:id',async(req,res)=>{
+    const id=req.params.id;
+    try {
+        const currentProduct=await Product.findById(id);
+        if(!currentProduct){
+            return res.status(404).json({message:'The product with the given ID was not found.'})
+            }
+            const recommendations=await Product.find({
+               
+                categories:currentProduct.categories,
+                $or:[
+                    {color:currentProduct.color},
+                    {types:currentProduct.types}
+            ],
+                _id:{ $ne:id}
+            }).limit(8);
+        
+          res.status(200).json(recommendations);
+    } catch (error) {
+        console.log(error);
+        res.status(500).json(error);
+    }
+})
 
 
 module.exports=router;

@@ -93,7 +93,7 @@ const ProductList = () => {
             const filtered = products.filter((item) => {
               const colorCondition = !filter.color || item.color === filter.color;
               const sizeCondition = !filter.size || item.size === filter.size;
-              const typeCondition = !filter.type || item.types.includes(filter.type);
+              const typeCondition = !filter.type || item.types===filter.type;
               return colorCondition || sizeCondition || typeCondition;
             });
             
@@ -149,6 +149,7 @@ const ProductList = () => {
                  <Option>Gold</Option>
                  <Option>Aqua</Option>
                  <Option>Gray</Option>
+                 <Option>Green</Option>
              </Select>
              <Select name='size' onClick={handleFilters}>
                  <Option disabled selected >Size</Option>
