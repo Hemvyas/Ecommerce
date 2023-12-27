@@ -918,7 +918,7 @@
     "title": "Drawcord ColourMe Hoodie",
     "types": "HOODIES",
     "categories": "Mens",
-    "color": "Fuchsia",
+    "color": "Gray",
     "price": 4205,
     "desc": "Oodles of options. The ColourMe starts life as an Origin Hoodie - we then change the cord to create these unique combinations.- 300gsm 80% cotton, 20% poly (some cols 60/40)- Pre-shrunk, anti-pill- Soft brushed inside- Contrast drawcord with metal tips- Pouch pocket with bar-tacks- Classic fitOther styles and colour combinations available to order.<strong>Allow 5 days lead time.As cords are changed to order, they are non-returnable.</strong><strong><a href=\"https://www.dropbox.com/sh/pr4sx4svj429hry/AABDbpM0jFGPSSXz-ptUJik4a?dl=0\" rel=\"noopener noreferrer\" target=\"_blank\">View Additional Images</a></strong>",
     "mainImg": "https://go.cin7.com/webfiles/BanburyClothing2NZ/webpages/images/836867/DCH Navy Grey-Fullbody-JPG-4.jpg",

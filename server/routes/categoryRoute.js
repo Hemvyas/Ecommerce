@@ -45,31 +45,44 @@ router.get('/random',async(req,res)=>{
     }
 })
 
+// router.get('/cat/:category', async (req, res) => {
+//     const qCategory = req.params.category;
+//     const page = parseInt(req.query.page) || 1;
+//     const limit = parseInt(req.query.limit) || 5;
 
-router.get('/cat/:category', async (req, res) => {
-    const qCategory = req.params.category;
-    const page=parseInt(req.query.page) || 1;
-    const limit=parseInt(req.query.limit) || 5;
-    try {
-        const totalProducts = await Product.countDocuments({
-            categories: { $in: [qCategory] },
-          });
+//     let filterQuery = {};
+//     if (req.query.filter) {
+//         const decodedFilter = decodeURIComponent(req.query.filter);
+//         filterQuery = JSON.parse(decodedFilter);
+//     }
 
-          const totalPages = Math.ceil(totalProducts / limit);
+//     try {
+//         const validPage = Math.max(page, 1);
 
-          const validPage = Math.min(Math.max(page, 1), totalPages);
+//         const products = await Product.find({
+//             categories: { $in: [qCategory] },
+//             ...filterQuery 
+//         }).sort({ _id: req.query.sort === 'newest' ? -1 : 1 })
+//             .skip((validPage - 1) * limit)
+//             .limit(limit);
 
-          const products = await Product.find({
-            categories: { $in: [qCategory] },
-          })
-            .skip((validPage - 1) * limit)
-            .limit(limit);
+//         const totalProducts = await Product.countDocuments({
+//             categories: { $in: [qCategory] },
+//             ...filterQuery 
+//         });
 
-      res.status(200).json({products,totalPages});
-    } catch (error) {
-      res.status(500).json(error);
-    }
-  });
+//         const totalPages = Math.ceil(totalProducts / limit);
+
+//         res.status(200).json({ products, totalPages });
+//     } catch (error) {
+//         res.status(500).json(error);
+//         console.log(error);
+//     }
+// });
+
+  
+
+
 
 // router.get('/get/:category', async (req, res) => {
 //     const qCategory = req.params.category;
@@ -83,23 +96,60 @@ router.get('/cat/:category', async (req, res) => {
 //     }
 //   });
 
-router.get('/type',async(req,res)=>{
+
+router.get('/cat/:category', async (req, res) => {
+    const qCategory = req.params.category;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 5;
+
+    let filterQuery = {
+        categories: { $in: [qCategory] }
+    };
+
+    if (req.query.filter) {
+        const decodedFilter = decodeURIComponent(req.query.filter);
+        const { color, size, type } = JSON.parse(decodedFilter);
+
+        // Check if either color or type is present
+        if (color || type) {
+            // Use $or operator to match either color or type
+            filterQuery.$or = [];
+
+            if (color) {
+                filterQuery.$or.push({ color });
+            }
+
+            if (type) {
+                filterQuery.$or.push({ type });
+            }
+        }
+
+        // Include size in the filter if present
+        if (size) {
+            filterQuery.size = size;
+        }
+    }
+
+    console.log('Filter Query:', filterQuery);
+
     try {
-        const typeProduct=await Product.distinct('color');
-        res.status(200).json(typeProduct);
+        const validPage = Math.max(page, 1);
+
+        const products = await Product.find(filterQuery)
+            .sort({ _id: req.query.sort === 'newest' ? -1 : 1 })
+            .skip((validPage - 1) * limit)
+            .limit(limit);
+
+        const totalProducts = await Product.countDocuments(filterQuery);
+
+        const totalPages = Math.ceil(totalProducts / limit);
+
+        res.status(200).json({ products, totalPages });
     } catch (error) {
         res.status(500).json(error);
+        console.log(error);
     }
-})
-
-router.get('/color',async(req,res)=>{
-    try {
-        const color=await Product.find({color:Charcoal})
-    } catch (error) {
-        res.status(500).json(error);
-    }
-})
-
+});
 
 
 module.exports=router;
