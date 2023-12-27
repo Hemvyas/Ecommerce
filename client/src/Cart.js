@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 const Container=styled.div``
 const Wrapper=styled.div`
 padding:20px;
@@ -29,7 +30,6 @@ background:${props=>props.type==="filled" ? "black":"transparent"};
 color:${props=>props.type==="filled" && "white"};
 `
 const Content=styled.div`
-
 `
 const Text=styled.span`
 text-decoration:underline;
@@ -44,7 +44,7 @@ flex:3;
 `
 const Summary=styled.div`
 flex:1;
-border:0.5px solid lightgary;
+border:0.5px solid lightgray;
 border-radius:10px;
 padding:20px;
 height:50vh;
@@ -59,6 +59,7 @@ display:flex;
 `
 const Image=styled.img`
 width:200px;
+margin:10px 0px;
 `
 const Name=styled.span``
 const Details=styled.div`
@@ -102,6 +103,7 @@ height:1px;
 `
 const SummaryTitle=styled.h1`
 font-weight:200;
+
 `
 const SummaryPrice=styled.span``
 const SummaryText=styled.span``
@@ -115,6 +117,7 @@ font-size:${props=>props.type==="total" && "25px"};
 
 const Cart = () => {
 const cart=useSelector(state=>state.cart)
+console.log(cart);
 const quantity=useSelector(state=>state.cart.quantity)
     
   return (
@@ -124,7 +127,10 @@ const quantity=useSelector(state=>state.cart.quantity)
         <Wrapper>
 <Title>Your Bag</Title>
 <Top>
-    <Button>CONTINUE SHOPPING</Button>
+<Link to='/'>
+<Button>CONTINUE SHOPPING</Button>
+</Link>
+    
     <Content>
     <Text>Shopping Bag({quantity})</Text>
     <Text>Your Wishlist(0)</Text>
@@ -137,7 +143,7 @@ const quantity=useSelector(state=>state.cart.quantity)
     {cart.products.map((product)=>(
     <Product>
     <ProductInfo>
-    <Image src={product.img}/>
+    <Image src={product.mainImg}/>  
     <Details>
         <Name><b>Product:</b>{product.title}</Name>
         <ID><b>ID:</b>{product._id}</ID>

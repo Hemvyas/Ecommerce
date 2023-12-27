@@ -136,8 +136,6 @@ const Product = () => {
   const id=location.pathname.split("/")[2];
   const [product,setProduct]=useState({});
   const [quantity,setQuantity]=useState(1);
-  const [color,setColor]=useState(" ");
-   const [size,setSize]=useState(" ");
    const [recomendedProducts,setRecommendedProducts]=useState([]);
    const dispatch=useDispatch();
 
@@ -160,7 +158,6 @@ const Product = () => {
       try {
         const res=await axios.get(`http://localhost:5000/api/category/recomend/${id}`);
         setRecommendedProducts(res.data);
-        console.log(res.data);
       } catch (error) {
         console.log(error);
       }
@@ -177,7 +174,7 @@ const Product = () => {
         }
   }
 const handleclick=()=>{
- dispatch(addToCart({...product,quantity,color,size}));
+ dispatch(addToCart({...product,quantity}));
 }
   return (
     <Container>
@@ -203,14 +200,13 @@ const handleclick=()=>{
             <FilterContainer>
               <Filter>
                 <FilterTitle>Color</FilterTitle>
-                {product.color && <FilterColor color={product.color} key={product.color} 
-                  onClick={()=>setColor(product.color)}
-                />}
+                <FilterColor color={product.color} key={product.color} 
+                />
               </Filter>
 
               <Filter>
                 <FilterTitle>Size</FilterTitle>
-                <FilterSize onChange={(e)=>setSize(e.target.value)}>
+                <FilterSize>
                 {product.size && <FilterSizeOption >{product.size}</FilterSizeOption>}
                 </FilterSize>
               </Filter>
