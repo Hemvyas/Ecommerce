@@ -5,8 +5,12 @@ import Footer from "./components/Footer"
 import styled from 'styled-components'
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { clearCart, removerFromCart } from './redux/cartSlice'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Container=styled.div``
 const Wrapper=styled.div`
 padding:20px;
@@ -114,11 +118,45 @@ justify-content:space-between;
 font-weight:${props=>props.type==="total" && "500"};
 font-size:${props=>props.type==="total" && "25px"};
 `
+const DeleteProduct=styled.span`
+cursor:pointer;
+position:relative;
+top:190px;
+&:hover{
+    color:#ff6347;
+    }    
+`
 
 const Cart = () => {
 const cart=useSelector(state=>state.cart)
-console.log(cart);
-const quantity=useSelector(state=>state.cart.quantity)
+const dispatch=useDispatch();
+const navigate=useNavigate();
+
+const handleRemove=(productId)=>{
+    toast.success("Item Removed From Cart!",toastOptions);
+    dispatch(removerFromCart(productId))
+}
+
+const handleCLear=()=>{
+    if (window.confirm('Are you sure want to clear the cart?')) {
+        toast.error("Your cart has been cleared.",toastOptions);
+        dispatch(clearCart())
+    }
+}
+
+const handleClick=()=>{
+    navigate(-1);
+}
+
+const toastOptions={
+    position:"top-center",
+    autoClose:5000,
+    hideProgressBar:false,
+    closeOnClick:true,
+    pauseOnHover:true,
+    draggable:true,
+    theme:"dark"
+   }
     
   return (
     <Container>
@@ -127,15 +165,13 @@ const quantity=useSelector(state=>state.cart.quantity)
         <Wrapper>
 <Title>Your Bag</Title>
 <Top>
-<Link to='/'>
-<Button>CONTINUE SHOPPING</Button>
-</Link>
+<Button onClick={()=>handleClick()}>CONTINUE SHOPPING</Button>
     
     <Content>
-    <Text>Shopping Bag({quantity})</Text>
+    <Text>Shopping Bag({cart.cart})</Text>
     <Text>Your Wishlist(0)</Text>
     </Content>
-    <Button type='filled'>CHECKOUT NOW</Button>
+    <Button type='filled' onClick={()=>handleCLear()}>CLEAR BAG</Button>
 </Top>
 <Bottom>
     <Info>
@@ -159,7 +195,13 @@ const quantity=useSelector(state=>state.cart.quantity)
         </Quantity>
         <ProductPrice>$ {product.price *product.quantity}</ProductPrice>
     </Price>
+    <DeleteProduct>
+    <DeleteOutlinedIcon onClick={()=>handleRemove(product._id)} />
+    </DeleteProduct>
+
     </Product>))}
+
+    
 
 <Hr/>
     </Info>
@@ -186,6 +228,7 @@ const quantity=useSelector(state=>state.cart.quantity)
      </Bottom>
         </Wrapper>
         <Footer/>
+        <ToastContainer/>
     </Container>
   )
 }

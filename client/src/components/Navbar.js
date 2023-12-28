@@ -87,7 +87,6 @@ margin-left:25px;
 `
 const Navbar = () => {
   const [scrolled,setScrolled]=useState(false);
-  
   const handleScroll=()=>{
     const offset=window.scrollY;
     if (offset > 60) {
@@ -107,11 +106,11 @@ const Navbar = () => {
 
   
           
-  const quantity=useSelector(state=>state.cart.quantity);
+  const cart=useSelector(state=>state.cart.cart); 
+ 
   
   return (
     <Container scrolled={scrolled}>
-
     <Wrapper>
     <Left>
     <Language>EN</Language>
@@ -132,8 +131,8 @@ const Navbar = () => {
     <Cred>Sign In</Cred>
     <Link to='/cart'>
     <Cred>
- <Badge badgeContent={quantity} color="primary">
-  <ShoppingCartOutlinedIcon color="action" />
+ <Badge badgeContent={cart} color="primary">
+  <ShoppingCartOutlinedIcon color="action"/>
     </Badge>    
     </Cred>
     </Link>

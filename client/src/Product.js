@@ -11,6 +11,8 @@ import axios from 'axios'
 import { addToCart } from './redux/cartSlice'
 import { useDispatch } from 'react-redux'
 import ProductItem from './components/ProductItem'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const Container=styled.div`
 
 `
@@ -139,7 +141,16 @@ const Product = () => {
    const [recomendedProducts,setRecommendedProducts]=useState([]);
    const dispatch=useDispatch();
 
- 
+   const toastOptions={
+    position:"top-center",
+    autoClose:3000,
+    hideProgressBar:false,
+    closeOnClick:true,
+    pauseOnHover:true,
+    draggable:true,
+    theme:"dark"
+   }
+
 
   useEffect(()=>{
     const fetchProduct=async()=>{
@@ -164,18 +175,23 @@ const Product = () => {
     }
     recomend();
   }, [id])
-  
 
+  const handleclick=()=>{
+    toast.success("Item Added To Cart!!!",toastOptions);
+    dispatch((addToCart({...product,quantity})))
+  }
   const handleQuantity=(type)=>{
     if(type==="inc"){
-     setQuantity(quantity+1)
-      }else {
-        quantity>1 &&  setQuantity(quantity-1)
-        }
+      setQuantity(quantity+1);
+    }
+    else{
+     quantity>1 && setQuantity(quantity-1)
+    }
   }
-const handleclick=()=>{
- dispatch(addToCart({...product,quantity}));
-}
+
+
+
+
   return (
     <Container>
         <Navbar/>
@@ -239,6 +255,7 @@ const handleclick=()=>{
 
         <Newsletter/>
         <Footer/>
+        <ToastContainer/>
     </Container>
   )
 }
