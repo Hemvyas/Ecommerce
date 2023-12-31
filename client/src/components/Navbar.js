@@ -4,8 +4,8 @@ import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Badge } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 const Container=styled.div`
 height:60px;
 position:sticky;
@@ -87,6 +87,11 @@ margin-left:25px;
 `
 const Navbar = () => {
   const [scrolled,setScrolled]=useState(false);
+  const [search,setSearch]=useState("")
+  const [products,setProducts]=useState([])
+  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
+  const navigate=useNavigate();
+
   const handleScroll=()=>{
     const offset=window.scrollY;
     if (offset > 60) {
@@ -96,7 +101,6 @@ const Navbar = () => {
         }
         };
   
-  
   useEffect(() => {
     window.addEventListener('scroll',handleScroll);
     return () => {
@@ -104,8 +108,51 @@ const Navbar = () => {
     };
   }, []);
 
-  
-          
+  useEffect(()=>{
+    const getProducts=async()=>{
+      try {
+        const res=await axios.get(`http://localhost:5000/api/category/product?search=${search}`)
+        setProducts(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    getProducts();
+  },[search])
+
+
+const handleSearch=()=>{
+  const searchQuery = debouncedSearchQuery.trim();
+
+  if (searchQuery === "") {
+    setSearch([]);
+    return;
+  }
+  const searchProducts=products.filter((item)=>{
+    return (
+    item.title.toLowerCase().includes(debouncedSearchQuery.toLocaleLowerCase())||
+    item.types.toLowerCase().includes(debouncedSearchQuery.toLowerCase())||
+    item.color.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
+    )
+  })    
+  navigate({
+    pathname:'/search',
+    state:{searchResults:searchProducts}
+  });
+  console.log(searchProducts);  
+}
+
+useEffect(() => {
+  const debounceTimer = setTimeout(() => {
+    setDebouncedSearchQuery(search);
+  }, 300);
+
+  return () => {
+    clearTimeout(debounceTimer);
+  };
+}, [search]);
+
+ 
   const cart=useSelector(state=>state.cart.cart); 
  
   
@@ -115,7 +162,7 @@ const Navbar = () => {
     <Left>
     <Language>EN</Language>
     <Search style={{color:"gray",fontSize:16}}>
-    <Input placeholder='Search'/>
+    <Input placeholder='Search' value={search} onChange={(e)=>setSearch(e.target.value)} onBlur={handleSearch}/>
     <SearchOutlinedIcon/>
     </Search>
     </Left>
@@ -136,10 +183,8 @@ const Navbar = () => {
     </Badge>    
     </Cred>
     </Link>
-   
     </Right>
     </Wrapper>
-   
     </Container>
   )
 }

@@ -6,6 +6,8 @@ import ProductList from './ProductList';
 import Register from './Register';
 import Login from './Login';
 import{BrowserRouter,Routes,Route} from "react-router-dom"
+import Pay from './components/Pay';
+import Search from './Search';
 
 
 function App() {
@@ -19,6 +21,8 @@ function App() {
         <Route path="/login" element={<Login/>}/>
         <Route path="/register" element={<Register/>}/>
         <Route path="/cart" element={<Cart/>}/>
+        <Route path='/pay' element={<Pay/>}/>
+        <Route path='/search' element={<Search/>}/>
       </Routes>
     </BrowserRouter>
     </>

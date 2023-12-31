@@ -171,5 +171,35 @@ router.get('/recomend/:id',async(req,res)=>{
     }
 })
 
+// router.get('/search',async(req,res)=>{
+//     const {title,color,types}=req.query;
+//     try {
+//         if (!title && !color && !types) {
+//             return res.status(400).send({ error: 'You must provide a search query.' });
+//             }
+//             const query={};
+//             if(title){
+//                 query.title={$regex:title,$options:"i"};
+//             }
+//             if(color){
+//                 query.color={$regex:color,$options:"i"};
+//             }
+//             if(types){
+//                 query.types={$regex:types,$options:"i"};
+//             }
+//             const search=await Product.find(query).limit(10);
+//             res.status(200).json(search);
+//     } catch (error) {
+//         console.log(error);
+//         res.status(500).json(error);
+//     }
+// })
+
+
+router.get('/product',async(req,res)=>{
+    const products=await Product.find().limit(50);
+    res.status(200).json(products);
+})
+
 
 module.exports=router;

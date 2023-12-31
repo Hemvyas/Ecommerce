@@ -11,7 +11,8 @@ const cartRoute= require("./routes/cartRoute");
 const orderRoute= require("./routes/orderRoute");
 const Product=require("./models/Product")
 const categoryRoute=require("./routes/categoryRoute");
-const { default: test } = require("node:test");
+const stripeRoute=require("./routes/stripe")
+// const { default: test } = require("node:test");
 dotenv.config();
 
 
@@ -24,6 +25,7 @@ app.use('/api/product',productRoute);
 app.use('/api/cart',cartRoute);
 app.use('/api/order',orderRoute);
 app.use('/api/category',categoryRoute)
+app.use('/api/stripe',stripeRoute)
 
 mongoose.connect(process.env.MONGODB_URI).then(()=>{
 console.log("DB Connected");
