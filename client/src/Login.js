@@ -4,6 +4,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch,useSelector } from 'react-redux'
 import { login } from './redux/login';
+import {Link} from "react-router-dom"
 const Container=styled.div`
 width:100vw;
 height:100vh;
@@ -46,11 +47,11 @@ margin-bottom:10px;
   cursor:not-allowed;
 }
 `
-const Link=styled.a`
+const Links=styled.div`
 margin:5px 0px;
-text-decoration:underline;
 cursor:pointer;
 font-size:14px;
+
 `
 const Error=styled.span`
 color:red
@@ -112,8 +113,11 @@ const handleLogin = async (e) => {
 
                 <BUTTON onClick={handleLogin} disabled={isLoggedIn}>LOGIN</BUTTON>
                 {error && <Error>Something went wrong!</Error>}
-                <Link>Forget Passoword?</Link>
-                <Link>Create a New Account</Link>
+                <Links>
+                <Link to='/jde' style={{color:"inherit"}}>Forget Passoword?</Link>
+                <br/><br/>
+                <Link to="/" style={{color:"inherit"}}>Create a New Account</Link>
+                </Links>
             </FORM>
         </Wrapper>
         <ToastContainer/>
