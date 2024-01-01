@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from "styled-components"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -69,16 +69,29 @@ const Login = () => {
     draggable:true,
     theme:"dark"
    }
-//   const handleValidation=()=>{
-//     if(email==="" || password===""){
-//       toast.error("Fill the required fields!",toastOptions)
-//       return false
-//   }
-// }
+
+   const hadleValidation=()=>{
+    if(email==="" || password===""){
+      toast.error("Please fill all fields!",toastOptions);
+      return false;
+    }
+    else if(password.length<8){
+      toast.error("Password should be at least 8 characters long!",toastOptions)
+      return false;
+    }
+      return true;
+   }
+
 
 const handleLogin = async (e) => {
   e.preventDefault();
-  await login(dispatch,{email,password}) 
+
+  if(hadleValidation())
+  {
+    toast.success("User LoggedIn Successfully!",toastOptions);
+    await login(dispatch,{email,password}) 
+  }
+
 }
 
   return (

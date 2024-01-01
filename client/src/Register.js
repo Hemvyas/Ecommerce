@@ -99,7 +99,10 @@ const Register = () => {
     if(res.status===201){
     toast.success("User Registered Successfully!",toastOptions);
   }
-  navigate('/login');
+  setTimeout(()=>{
+    navigate('/login');
+  },5000)
+  
 }
 }
   return (

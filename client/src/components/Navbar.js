@@ -86,7 +86,6 @@ const Navbar = () => {
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const navigate=useNavigate();
 
-
   useEffect(()=>{
     const getProducts=async()=>{
       try {
@@ -153,11 +152,11 @@ useEffect(() => {
 
 
     <Right>
-    <Link to='/register'>
+    <Link to='/register' style={{textDecoration:"none",color:"inherit"}}>
     <Cred>Register</Cred>
     </Link>
     
-    <Link to="/login">
+    <Link to="/login" style={{textDecoration:"none",color:"inherit"}}>
     <Cred>Sign In</Cred>
     </Link>
     
