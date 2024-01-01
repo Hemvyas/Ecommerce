@@ -71,9 +71,9 @@ const Footer = () => {
   return (
     <Container>
     <Left>
-        <Logo>ECOM.</Logo>
+        <Logo>VogueVault</Logo>
         <Desc>
-            ©2023 ECOM Inc. All rights reserved.<br/>
+            ©2023 VogueVault Inc. All rights reserved.<br/>
         </Desc>
         <SocialMedia>
             <Icon color='385999'>
