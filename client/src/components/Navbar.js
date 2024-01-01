@@ -3,9 +3,10 @@ import styled from "styled-components"
 import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Badge } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { logout } from '../redux/userSlice';
 const Container=styled.div`
 height:60px;
 `
@@ -85,6 +86,7 @@ const Navbar = () => {
   const [products,setProducts]=useState([])
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const navigate=useNavigate();
+  const dispatch=useDispatch();
 
   useEffect(()=>{
     const getProducts=async()=>{
@@ -130,10 +132,18 @@ useEffect(() => {
   };
 }, [search]);
 
+const handleClick=()=>{
+  localStorage.removeItem("userData");
+  dispatch(logout());
+}
  
   const cart=useSelector(state=>state.cart.cart); 
- 
-  
+  const isLoggedIn=useSelector(state=>state.user.isLoggedIn)
+
+  useEffect(() => {
+    console.log('isLoggedIn changed:', isLoggedIn);
+  }, [isLoggedIn]);
+
   return (
     <Container>
     <Wrapper>
@@ -147,7 +157,7 @@ useEffect(() => {
 
 
     <Center>
-    <Logo>ECOM.</Logo>
+    <Logo>VogueVault</Logo>
     </Center>
 
 
@@ -155,10 +165,14 @@ useEffect(() => {
     <Link to='/register' style={{textDecoration:"none",color:"inherit"}}>
     <Cred>Register</Cred>
     </Link>
-    
-    <Link to="/login" style={{textDecoration:"none",color:"inherit"}}>
+
+    {isLoggedIn ?(
+        <Cred onClick={handleClick}>Sign Out</Cred>
+    ):(
+      <Link to="/login" style={{textDecoration:"none",color:"inherit"}}>
     <Cred>Sign In</Cred>
-    </Link>
+    </Link> 
+    )}
     
     <Link to='/cart'>
     <Cred>
