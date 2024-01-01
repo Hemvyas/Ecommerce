@@ -8,11 +8,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 const Container=styled.div`
 height:60px;
-position:sticky;
-top:0;
-z-index:100;
-transition:background 0.3s ease;
-background:${props=>props.scrolled?'green':'white'};
 `
 const Wrapper=styled.div`
 padding:10px 20px;
@@ -86,27 +81,11 @@ margin-left:25px;
   }
 `
 const Navbar = () => {
-  const [scrolled,setScrolled]=useState(false);
   const [search,setSearch]=useState("")
   const [products,setProducts]=useState([])
   const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
   const navigate=useNavigate();
 
-  const handleScroll=()=>{
-    const offset=window.scrollY;
-    if (offset > 60) {
-      setScrolled(true);
-      } else {
-        setScrolled(false);
-        }
-        };
-  
-  useEffect(() => {
-    window.addEventListener('scroll',handleScroll);
-    return () => {
-      window.removeEventListener('scroll',handleScroll);
-    };
-  }, []);
 
   useEffect(()=>{
     const getProducts=async()=>{
@@ -157,7 +136,7 @@ useEffect(() => {
  
   
   return (
-    <Container scrolled={scrolled}>
+    <Container>
     <Wrapper>
     <Left>
     <Language>EN</Language>
@@ -174,8 +153,14 @@ useEffect(() => {
 
 
     <Right>
+    <Link to='/register'>
     <Cred>Register</Cred>
+    </Link>
+    
+    <Link to="/login">
     <Cred>Sign In</Cred>
+    </Link>
+    
     <Link to='/cart'>
     <Cred>
  <Badge badgeContent={cart} color="primary">

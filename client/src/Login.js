@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {useEffect, useState } from 'react'
 import styled from "styled-components"
-
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { useDispatch,useSelector } from 'react-redux'
+import { login } from './redux/login';
 const Container=styled.div`
 width:100vw;
 height:100vh;
@@ -38,6 +41,10 @@ background:teal;
 color:#fff;
 cursor:pointer;
 margin-bottom:10px;
+&:disabled{
+  color:green;
+  cursor:not-allowed;
+}
 `
 const Link=styled.a`
 margin:5px 0px;
@@ -45,19 +52,58 @@ text-decoration:underline;
 cursor:pointer;
 font-size:14px;
 `
+const Error=styled.span`
+color:red
+`
 const Login = () => {
+  const dispatch=useDispatch();
+  const { error,isLoggedIn } = useSelector((state) => state.user);
+  const [email,setEmail]=useState("")
+  const [password,setPassword] = useState("")
+  const toastOptions={
+    position:"top-center",
+    autoClose:5000,
+    hideProgressBar:false,
+    closeOnClick:true,
+    pauseOnHover:true,
+    draggable:true,
+    theme:"dark"
+   }
+//   const handleValidation=()=>{
+//     if(email==="" || password===""){
+//       toast.error("Fill the required fields!",toastOptions)
+//       return false
+//   }
+// }
+
+const handleLogin = async (e) => {
+  e.preventDefault();
+  await login(dispatch,{email,password}) 
+}
+
   return (
     <Container>
         <Wrapper>
             <Title>SIGN IN</Title>
             <FORM>
-                <Input placeholder ="username"/>
-                <Input placeholder ="password"/>
-                <BUTTON>LOGIN</BUTTON>
+                <Input placeholder ="email" 
+                type='email' 
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
+                />
+                <Input placeholder ="password" 
+                type='password'
+                value={password} 
+                onChange={(e)=>setPassword(e.target.value)}
+                />
+
+                <BUTTON onClick={handleLogin} disabled={isLoggedIn}>LOGIN</BUTTON>
+                {error && <Error>Something went wrong!</Error>}
                 <Link>Forget Passoword?</Link>
                 <Link>Create a New Account</Link>
             </FORM>
         </Wrapper>
+        <ToastContainer/>
     </Container>
   )
 }
