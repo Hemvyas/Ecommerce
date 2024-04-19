@@ -40,7 +40,7 @@ const cartSlice=createSlice({
                 total:0,
                 cart:0
             }
-        },
+        }
     }    
 })
 export const{addToCart,removerFromCart,clearCart}=cartSlice.actions;

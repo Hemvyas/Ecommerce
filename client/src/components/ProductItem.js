@@ -74,9 +74,11 @@ const ProductItem = ({item}) => {
     <Circle/>
         <Image src={item.mainImg} alt={item.title} loading='lazy' />
     <Info>
-      <Icon>
+    <Link to="/cart" style={{textDecoration:"none",color:"inherit"}}>
+    <Icon>
         <ShoppingCartOutlinedIcon/>
       </Icon>
+    </Link>
       <Link to={`/product/${item._id}`} style={{textDecoration:"none",color:"inherit"}}>
       <Icon>
         <SearchOutlinedIcon/>
