@@ -17,15 +17,21 @@ const Categories = () => {
   useEffect(() => {
 
     const getkidsProducts=async()=>{
-      const res=await axios.get("http://localhost:5000/api/category/kids");
+      const res = await axios.get(
+        "https://ecommerce-brown-one.vercel.app/api/category/kids"
+      );
       setKids(res.data)
     }
     const getmensProducts=async()=>{
-      const res=await axios.get("http://localhost:5000/api/category/mens");
+      const res = await axios.get(
+        "https://ecommerce-brown-one.vercel.app/api/category/mens"
+      );
       setMens(res.data)
     }
     const getwomensProducts=async()=>{
-      const res=await axios.get("http://localhost:5000/api/category/womens");
+      const res = await axios.get(
+        "https://ecommerce-brown-one.vercel.app/api/category/womens"
+      );
       setWomens(res.data);
     }
     getkidsProducts();

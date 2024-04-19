@@ -87,7 +87,9 @@ const ProductList = () => {
 
           try {
             const filterString = encodeURIComponent(JSON.stringify(filter));
-            const res=await axios.get(`http://localhost:5000/api/category/cat/${category}?page=${page}&limit=${limit}&filter=${filterString}&sort=${sort}`);
+            const res = await axios.get(
+              `https://ecommerce-brown-one.vercel.app/api/category/cat/${category}?page=${page}&limit=${limit}&filter=${filterString}&sort=${sort}`
+            );
             // console.log(res.data.products);
 
             const filtered = products.filter((item) => {

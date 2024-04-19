@@ -17,7 +17,9 @@ const Products = ({category,filters,sort}) => {
 
   useEffect(() => {
     const getRandomProducts=async()=>{
-      const res=await axios.get("http://localhost:5000/api/category/random");
+      const res = await axios.get(
+        "https://ecommerce-brown-one.vercel.app/api/category/random"
+      );
       setRandomProducts(res.data);
     }
     getRandomProducts();

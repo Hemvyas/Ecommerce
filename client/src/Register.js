@@ -87,12 +87,15 @@ const Register = () => {
   const handleRegister=async(e)=>{
     e.preventDefault();
     if(hadleValidation()){
-      const res=await axios.post("http://localhost:5000/api/auth/register",{
-      username,
-      confirmPassword,
-      email,
-      password
-      });
+      const res = await axios.post(
+        "https://ecommerce-brown-one.vercel.app/api/auth/register",
+        {
+          username,
+          confirmPassword,
+          email,
+          password,
+        }
+      );
       if(res.status===501){
       toast.error(res.msg,toastOptions);
     }

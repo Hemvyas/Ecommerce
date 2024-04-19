@@ -155,7 +155,9 @@ const Product = () => {
   useEffect(()=>{
     const fetchProduct=async()=>{
       try {
-        const res=await axios.get(`http://localhost:5000/api/product/${id}`);
+        const res = await axios.get(
+          `https://ecommerce-brown-one.vercel.app/api/product/${id}`
+        );
         setProduct(res.data);
       } catch (error) {
         console.log(error);
