@@ -9,7 +9,15 @@ display:flex;
 padding:20px;
 flex-wrap:wrap;
 justify-content:space-between;
+position:relative;
 `
+const Loading = styled.div`
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translateX(-50%,-50%) ;
+  font-size:110px;
+`;
 const Products = () => {
   const [loading,setLoading]=useState(false);
   const [randomProducts,setRandomProducts]=useState([]);
@@ -31,7 +39,9 @@ const Products = () => {
   return (
     <Container>
       {loading ? (
-        <CircularProgress />
+        <Loading>
+          <CircularProgress />
+        </Loading>
       ) : (
         randomProducts.map((item) => <ProductItem item={item} key={item.id} />)
       )}
