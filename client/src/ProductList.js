@@ -88,16 +88,24 @@ const ProductList = () => {
     const [limit, setLimit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
     const [filteredProducts,setFilteredProducts]=useState([]);
-    const [products, setProducts] = useState([]);
+    // const [products, setProducts] = useState([]);
+    const [loading,setLoading]=useState(false);
     const searchQuery=useSelector(state=>state.searchQuery)
     useEffect(() => {
         const getProducts=async()=>{
+          setLoading(true);
           try {
-           const res = await axios.get(
-             `https://ecommerce-brown-one.vercel.app/api/category/cat/${category}?page=${page}&limit=${limit}`
-           );
-           setProducts(res.data.products)
-            let filteredProducts=res.data.products;
+           const res = await axios
+             .get(
+               `https://ecommerce-brown-one.vercel.app/api/category/cat/${category}?page=${page}&limit=${limit}`
+             )
+             const data=await res.data;
+             if (!data || !data.products) {
+               console.error("Invalid API response", data);
+               setFilteredProducts([]);
+               setTotalPages(0);
+             }else{
+            let filteredProducts=data.products;
             if(color!=="color"){
               filteredProducts = filteredProducts && filteredProducts.filter(
                 (product) => product.color === color);
@@ -114,17 +122,21 @@ const ProductList = () => {
             }
             if(searchQuery)
             {
-              filteredProducts = filteredProducts &&  
-              filteredProducts.filter((products)=>
-              products.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-              products.types.toLowerCase().includes(searchQuery.toLowerCase()))
+              filteredProducts = 
+              filteredProducts &&  
+              filteredProducts.filter((product)=>
+              product.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              product.types.toLowerCase().includes(searchQuery.toLowerCase()))
             }
             filteredProducts=filteredProducts.sort((a,b)=>sort==="asc"?a.price-b.price:b.price-a.price)
+            console.log(filteredProducts);
             setFilteredProducts(filteredProducts);
             setTotalPages(res.data.totalPages)
+          }
           } catch (error) {
             console.log(error);
           }
+            setLoading(false);
           }
         getProducts();
     }, [category, page, sort,color,types,size,limit,searchQuery]);
@@ -142,7 +154,9 @@ const ProductList = () => {
               value={color}
               onChange={(e) => setColor(e.target.value)}
             >
-              <Option selected>Color</Option>
+              <Option value="">
+                Color
+              </Option>
               <Option value="White">White</Option>
               <Option value="Black">Black</Option>
               <Option value="Maroon">Maroon</Option>
@@ -160,7 +174,9 @@ const ProductList = () => {
               value={size}
               onChange={(e) => setSize(e.target.value)}
             >
-              <Option selected>Size</Option>
+              <Option value="">
+                Size
+              </Option>
               <Option value="XS">XS</Option>
               <Option value="S">S</Option>
               <Option value="M">M</Option>
@@ -172,7 +188,9 @@ const ProductList = () => {
               value={types}
               onChange={(e) => setTypes(e.target.value)}
             >
-              <Option selected>Type</Option>
+              <Option value="">
+                Type
+              </Option>
               <Option value="FLEECE">FLEECE</Option>
               <Option value="HOODIES"> HOODIES</Option>
               <Option value="JACKETS">JACKETS</Option>
@@ -185,7 +203,7 @@ const ProductList = () => {
           <Filter>
             <Text>Sort Products:</Text>
             <Select name="sort" onChange={(e) => setSort(e.target.value)}>
-              <Option selected value="newest">
+              <Option value="newest">
                 Newest
               </Option>
               <Option value="asc">Price (asc)</Option>
@@ -194,13 +212,15 @@ const ProductList = () => {
           </Filter>
         </FilterContainer>
         <Content>
-          {Array.isArray(filteredProducts) && filteredProducts.length > 0
-            ? filteredProducts.map((item) => (
-                <ProductItem key={item.id} item={item} />
-              ))
-            : products.map((item) => (
-                <ProductItem key={item.id} item={item} />
-              ))}
+          {loading ? (
+            <p>Loading...</p>
+          ) : Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
+            filteredProducts.map((item) => (
+              <ProductItem key={item.id} item={item} />
+            ))
+          ) : (
+            <Text>No Products found</Text>
+          )}
         </Content>
 
         <Pagination>

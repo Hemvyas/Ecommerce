@@ -101,6 +101,18 @@ router.get("/cat/:category", async (req, res) => {
   const { category } = req.params;
   const { page = 1, limit = 10 } = req.query;
 
+   if (isNaN(page) || page < 1) {
+     return res
+       .status(400)
+       .json({ error: "Page number must be a positive integer." });
+   }
+
+   if (isNaN(limit) || limit < 1) {
+     return res
+       .status(400)
+       .json({ error: "Limit must be a positive integer." });
+   }
+
   let filterQuery = { category: { $in: [category] } };
 
   try {
