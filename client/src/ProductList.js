@@ -9,6 +9,7 @@ import { useLocation } from 'react-router-dom'
 import ProductItem from './components/ProductItem'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
+import { useSelector } from 'react-redux'
 
 const Container=styled.div`
 `
@@ -79,156 +80,153 @@ bottom:8%;
 const ProductList = () => {
     const location=useLocation();
     const category = location.pathname.split('/')[2];
-    const [filter,setFilter]=useState({})
     const [sort,setSort]=useState("newest")
-    const [products,setProducts] = useState([])
+    const [color, setColor] = useState("color");
+    const [types, setTypes] = useState("types");
+    const [size, setSize] = useState("size");
     const [page, setPage] = useState(1);
     const [limit, setLimit] = useState(10);
     const [totalPages, setTotalPages] = useState(1);
     const [filteredProducts,setFilteredProducts]=useState([]);
-
-    const handleFilters=(e)=>{
-
-      setFilter({...filter,
-        [e.target.name]: e.target.value})
-    }
-
+    const [products, setProducts] = useState([]);
+    const searchQuery=useSelector(state=>state.searchQuery)
     useEffect(() => {
         const getProducts=async()=>{
-
           try {
-            const filterString = encodeURIComponent(JSON.stringify(filter));
-            const res = await axios.get(
-              `https://ecommerce-brown-one.vercel.app/api/category/cat/${category}?page=${page}&limit=${limit}&filter=${filterString}&sort=${sort}`
-            );
-            // console.log(res.data.products);
-
-            const filtered = products.filter((item) => {
-              const colorCondition = !filter.color || item.color === filter.color;
-              const sizeCondition = !filter.size || item.size === filter.size;
-              const typeCondition = !filter.type || item.types===filter.type;
-              return colorCondition || sizeCondition || typeCondition;
-            });
-            
-          
-            const sortedProducts=[...filtered].sort((a,b)=>{
-              if(sort==="newest"){
-                return new Date(b.createdAt)-new Date(a.createdAt)
-              }
-              else if (sort==='asc'){
-                return a.price - b.price;
-                }else{
-                  return b.price - a.price;
-                  }     
-            })
-
-            setFilteredProducts(sortedProducts);
-
-            setProducts(res.data.products)
-            setTotalPages(res.data.totalPages) 
+           const res = await axios.get(
+             `https://ecommerce-brown-one.vercel.app/api/category/cat/${category}?page=${page}&limit=${limit}`
+           );
+           setProducts(res.data.products)
+            let filteredProducts=res.data.products;
+            if(color!=="color"){
+              filteredProducts = filteredProducts && filteredProducts.filter(
+                (product) => product.color === color);
+            }
+            if(types!=="types"){
+              filteredProducts =
+                filteredProducts &&
+                filteredProducts.filter((product) => product.types === types);
+            }
+            if (size !== "size") {
+              filteredProducts =
+                filteredProducts &&
+                filteredProducts.filter((product) => product.size === size);
+            }
+            if(searchQuery)
+            {
+              filteredProducts = filteredProducts &&  
+              filteredProducts.filter((products)=>
+              products.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+              products.types.toLowerCase().includes(searchQuery.toLowerCase()))
+            }
+            filteredProducts=filteredProducts.sort((a,b)=>sort==="asc"?a.price-b.price:b.price-a.price)
+            setFilteredProducts(filteredProducts);
+            setTotalPages(res.data.totalPages)
           } catch (error) {
             console.log(error);
           }
           }
         getProducts();
-    }, [category, page, filter, sort])
-
-    
-    const handlePagination = (newPage) => {
-      if (newPage > 0 && newPage <= totalPages) {
-        setPage(newPage);
-      }  
-      };
-      const isNextDisabled = page >= totalPages;
-
-
+    }, [category, page, sort,color,types,size,limit,searchQuery]);
 
     return (
-    <Container>
-     <Navbar/>
-        <Announcement/>
+      <Container>
+        <Navbar />
+        <Announcement />
         <Title>{category} Section</Title>
         <FilterContainer>
-             <Filter><Text>Filter Products:</Text>
-             <Select name='color' onClick={handleFilters}>
-                 <Option disabled selected>Color</Option>
-                 <Option>White</Option>
-                 <Option>Black</Option>
-                 <Option>Maroon</Option>
-                 <Option>Yellow</Option>
-                 <Option>Navy</Option>
-                 <Option>Red</Option>
-                 <Option>Orange</Option>
-                 <Option>Gold</Option>
-                 <Option>Aqua</Option>
-                 <Option>Gray</Option>
-                 <Option>Green</Option>
-             </Select>
-             <Select name='size' onClick={handleFilters}>
-                 <Option disabled selected >Size</Option>
-                 <Option>XS</Option>
-                 <Option>S</Option>
-                 <Option>M</Option>
-                 <Option>L</Option>
-                 <Option>XL</Option>
-             </Select>
-             <Select name='type' onClick={handleFilters}>
-                 <Option disabled selected >Type</Option>
-                 <Option>FLEECE</Option>
-                 <Option> HOODIES</Option>
-                 <Option>JACKETS</Option>
-                 <Option>MERINO</Option>
-                 <Option>PERFORM</Option>
-                 <Option>SWEATS</Option>
-                 <Option>TEES</Option>
-             </Select>
-             </Filter>
-             <Filter><Text>Sort Products:</Text>
-             <Select name='sort' onChange={(e)=>setSort(e.target.value)}>
-                 <Option selected value="newest" >Newest</Option>
-                 <Option value="asc">Price (asc)</Option>
-                 <Option value="desc">Price (desc)</Option>
-             </Select>
-             </Filter>
-         </FilterContainer>
-         <Content>
-         {Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
-    filteredProducts.map((item) => (
-      <ProductItem key={item.id} item={item} />
-    ))
-  ) : (
-    products.map((item) => (
-      <ProductItem key={item.id} item={item} />
-    ))
-  )}
-         </Content>
+          <Filter>
+            <Text>Filter Products:</Text>
+            <Select
+              name="color"
+              value={color}
+              onChange={(e) => setColor(e.target.value)}
+            >
+              <Option selected>Color</Option>
+              <Option value="White">White</Option>
+              <Option value="Black">Black</Option>
+              <Option value="Maroon">Maroon</Option>
+              <Option value="Yellow">Yellow</Option>
+              <Option value="Navy">Navy</Option>
+              <Option value="Red">Red</Option>
+              <Option value="Orange">Orange</Option>
+              <Option value="Gold">Gold</Option>
+              <Option value="Aqua">Aqua</Option>
+              <Option value="Gray">Gray</Option>
+              <Option value="Green">Green</Option>
+            </Select>
+            <Select
+              name="size"
+              value={size}
+              onChange={(e) => setSize(e.target.value)}
+            >
+              <Option selected>Size</Option>
+              <Option value="XS">XS</Option>
+              <Option value="S">S</Option>
+              <Option value="M">M</Option>
+              <Option value="L">L</Option>
+              <Option value="XL">XL</Option>
+            </Select>
+            <Select
+              name="type"
+              value={types}
+              onChange={(e) => setTypes(e.target.value)}
+            >
+              <Option selected>Type</Option>
+              <Option value="FLEECE">FLEECE</Option>
+              <Option value="HOODIES"> HOODIES</Option>
+              <Option value="JACKETS">JACKETS</Option>
+              <Option value="MERINO">MERINO</Option>
+              <Option value="PERFORM">PERFORM</Option>
+              <Option value="SWEATS">SWEATS</Option>
+              <Option value="TEES">TEES</Option>
+            </Select>
+          </Filter>
+          <Filter>
+            <Text>Sort Products:</Text>
+            <Select name="sort" onChange={(e) => setSort(e.target.value)}>
+              <Option selected value="newest">
+                Newest
+              </Option>
+              <Option value="asc">Price (asc)</Option>
+              <Option value="desc">Price (desc)</Option>
+            </Select>
+          </Filter>
+        </FilterContainer>
+        <Content>
+          {Array.isArray(filteredProducts) && filteredProducts.length > 0
+            ? filteredProducts.map((item) => (
+                <ProductItem key={item.id} item={item} />
+              ))
+            : products.map((item) => (
+                <ProductItem key={item.id} item={item} />
+              ))}
+        </Content>
 
-         <Pagination>
-        <Arrow
-          direction="left"
-          onClick={() => handlePagination(page - 1)}
-          disabled={page === 1}
-        >
-          <ArrowBackIosNewOutlinedIcon />
-        </Arrow>
-        <Page>
-        <span>{page}</span>
-        </Page>
-        <Arrow
-          direction="right"
-          onClick={() => handlePagination(page + 1)}
-          disabled={isNextDisabled}
-        >
-          <ArrowForwardIosOutlinedIcon />
-        </Arrow>
-      </Pagination>
-         
-         <Newsletter/>
-         <Footer/>
-    </Container>
+        <Pagination>
+          <Arrow
+            direction="left"
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+          >
+            <ArrowBackIosNewOutlinedIcon />
+          </Arrow>
+          <Page>
+            <span>{page}</span>
+          </Page>
+          <Arrow
+            direction="right"
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page >= totalPages}
+          >
+            <ArrowForwardIosOutlinedIcon />
+          </Arrow>
+        </Pagination>
 
-
-  )
+        <Newsletter />
+        <Footer />
+      </Container>
+    );
 }
 
 export default ProductList

@@ -97,55 +97,30 @@ router.get('/random',async(req,res)=>{
 //   });
 
 
-router.get('/cat/:category', async (req, res) => {
-    const qCategory = req.params.category;
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 5;
+router.get("/cat/:category", async (req, res) => {
+  const { category } = req.params;
+  const { page = 1, limit = 10 } = req.query;
 
-    let filterQuery = {
-        categories: { $in: [qCategory] }
-    };
+  let filterQuery = { category: { $in: [category] } };
 
-    if (req.query.filter) {
-        const decodedFilter = decodeURIComponent(req.query.filter);
-        const { color, size, type } = JSON.parse(decodedFilter);
+  try {
+    const products = await Product.find(filterQuery)
+      .sort({ _id: -1 }) // Sorting by _id to simulate 'newest'; adjust as needed
+      .skip((page - 1) * parseInt(limit))
+      .limit(parseInt(limit));
 
-        if (color || type) {
-            filterQuery.$or = [];
+    const totalProducts = await Product.countDocuments(filterQuery);
+    const totalPages = Math.ceil(totalProducts / parseInt(limit));
 
-            if (color) {
-                filterQuery.$or.push({ color });
-            }
-
-            if (type) {
-                filterQuery.$or.push({ type });
-            }
-        }
-        if (size) {
-            filterQuery.size = size;
-        }
-    }
-
-    // console.log('Filter Query:', filterQuery);
-
-    try {
-        const validPage = Math.max(page, 1);
-
-        const products = await Product.find(filterQuery)
-            .sort({ _id: req.query.sort === 'newest' ? -1 : 1 })
-            .skip((validPage - 1) * limit)
-            .limit(limit);
-
-        const totalProducts = await Product.countDocuments(filterQuery);
-
-        const totalPages = Math.ceil(totalProducts / limit);
-
-        res.status(200).json({ products, totalPages });
-    } catch (error) {
-        res.status(500).json(error);
-        console.log(error);
-    }
+    res.status(200).json({ products, totalPages });
+  } catch (error) {
+    res.status(500).json(error);
+    console.log(error);
+  }
 });
+
+
+
 
 router.get('/recomend/:id',async(req,res)=>{
     const id=req.params.id;

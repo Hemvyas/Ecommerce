@@ -7,7 +7,6 @@ import Register from './Register';
 import Login from './Login';
 import{BrowserRouter,Routes,Route,Navigate} from "react-router-dom"
 import Pay from './components/Pay';
-import Search from './Search';
 import { useSelector } from 'react-redux';
 
 
@@ -27,7 +26,6 @@ function App() {
         <Route path="/register" element={<Register/>}/>
         <Route path="/cart" element={<Cart/>}/>
         <Route path='/pay' element={<Pay/>}/>
-        <Route path='/search' element={<Search/>}/>
       </Routes>
     </BrowserRouter>
     </>

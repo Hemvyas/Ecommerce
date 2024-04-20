@@ -1,12 +1,11 @@
-import React, { useState,useEffect } from 'react'
+import React, { useEffect } from 'react'
 import styled from "styled-components"
-import SearchOutlinedIcon from '@mui/icons-material/SearchOutlined';
 import { Badge } from '@mui/material';
 import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { logout } from '../redux/userSlice';
+import Search from './Search';
 const Container = styled.div`
   height: 60px;
 `;
@@ -50,28 +49,8 @@ const Center = styled.div`
     flex: 12;
   }
 `;
-const Search = styled.div`
-border:0.5px solid lightgray;
-display:flex;
-align-items:center;
-margin-left:25px;
-padding:5px;
-  @media (max-width: 630px) {
-    display:none;
-  }
-`;
-const Input=styled.input`
-border:none;
-width:100%;
-outline:none;
-font-size:18px;
-background:transparent;
-color:black;
-width:100%;
-&::placeholder{
-  color:darkgrey;
-}
-`
+
+
 const StyledLink = styled(Link)`
   text-decoration: none;
   color: inherit; 
@@ -88,55 +67,7 @@ cursor:pointer;
 margin-left:25px;
 `;
 const Navbar = () => {
-  const [search,setSearch]=useState("")
-  const [products,setProducts]=useState([])
-  const [debouncedSearchQuery, setDebouncedSearchQuery] = useState("");
-  const navigate=useNavigate();
   const dispatch=useDispatch();
-
-  useEffect(()=>{
-    const getProducts=async()=>{
-      try {
-        const res=await axios.get(`http://localhost:5000/api/category/product?search=${search}`)
-        setProducts(res.data);
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    getProducts();
-  },[search])
-
-
-const handleSearch=()=>{
-  const searchQuery = debouncedSearchQuery.trim();
-
-  if (searchQuery === "") {
-    setSearch([]);
-    return;
-  }
-  const searchProducts=products.filter((item)=>{
-    return (
-    item.title.toLowerCase().includes(debouncedSearchQuery.toLocaleLowerCase())||
-    item.types.toLowerCase().includes(debouncedSearchQuery.toLowerCase())||
-    item.color.toLowerCase().includes(debouncedSearchQuery.toLowerCase())
-    )
-  })    
-  navigate({
-    pathname:'/search',
-    state:{searchResults:searchProducts}
-  });
-  console.log(searchProducts);  
-}
-
-useEffect(() => {
-  const debounceTimer = setTimeout(() => {
-    setDebouncedSearchQuery(search);
-  }, 300);
-
-  return () => {
-    clearTimeout(debounceTimer);
-  };
-}, [search]);
 
 const handleClick=()=>{
   localStorage.removeItem("userData");
@@ -155,15 +86,7 @@ const handleClick=()=>{
       <Wrapper>
         <Left>
           <Language>EN</Language>
-          <Search style={{ color: "gray", fontSize: 16 }}>
-            <Input
-              placeholder="Search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              onBlur={handleSearch}
-            />
-            <SearchOutlinedIcon />
-          </Search>
+          <Search/>
         </Left>
 
         <Center>
