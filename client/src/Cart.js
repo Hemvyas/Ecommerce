@@ -12,9 +12,12 @@ import { clearCart, removerFromCart } from './redux/cartSlice'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Container=styled.div``
-const Wrapper=styled.div`
-padding:20px;
-`
+const Wrapper = styled.div`
+  padding: 20px;
+  @media (max-width: 390px) {
+    padding:10px;
+  }
+`;
 const Title=styled.h1`
 font-weight:300;
 text-align:center;
@@ -35,14 +38,20 @@ color:${props=>props.type==="filled" && "white"};
 `
 const Content=styled.div`
 `
-const Text=styled.span`
-text-decoration:underline;
-cursor:pointer;
-`
-const Bottom=styled.div`
-display:flex;
-justify-content:space-between;
-`
+const Text = styled.span`
+  text-decoration: underline;
+  cursor: pointer;
+  @media (max-width: 390px) {
+    display:none;
+  }
+`;
+const Bottom = styled.div`
+  display: flex;
+  justify-content: space-between;
+  @media (max-width: 390px) {
+    flex-direction:column;
+  }
+`;
 const Info=styled.div`
 flex:3;
 `
@@ -53,10 +62,13 @@ border-radius:10px;
 padding:20px;
 height:50vh;
 `
-const Product=styled.div`
-display:flex;
-justify-content:center;
-`
+const Product = styled.div`
+  display: flex;
+  justify-content: center;
+  @media (max-width: 390px) {
+    flex-direction: column;
+  }
+`;
 const ProductInfo=styled.div`
 flex:2;
 display:flex;

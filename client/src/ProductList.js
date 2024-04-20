@@ -19,18 +19,29 @@ const FilterContainer=styled.div`
 display:flex;
 justify-content:space-between;
 `
-const Filter=styled.div`
-margin:20px;
-`
-const Text=styled.div`
-font-size:17px;
-font-weight:600;
-margin-right:20px;
-`
-const Select=styled.select`
-padding:10px;
-margin-right:20px;
-`
+const Filter = styled.div`
+  margin: 20px;
+  @media (max-width: 530px) {
+    display:flex;
+    flex-direction:column;
+    width:0 20px;
+  }
+`;
+const Text = styled.div`
+  font-size: 17px;
+  font-weight: 600;
+  margin-right: 20px;
+  @media (max-width: 530px) {
+    margin-right:0px;
+  }
+`;
+const Select = styled.select`
+  padding: 10px;
+  margin-right: 20px;
+  @media (max-width: 530px) {
+    margin:10px 0;
+  }
+`;
 const Option=styled.option`
 `
 const Content=styled.div`
@@ -120,7 +131,7 @@ const ProductList = () => {
           }
           }
         getProducts();
-    }, [category, page, limit, filter, sort])
+    }, [category, page, filter, sort])
 
     
     const handlePagination = (newPage) => {
@@ -136,7 +147,7 @@ const ProductList = () => {
     <Container>
      <Navbar/>
         <Announcement/>
-        <Title>{category}</Title>
+        <Title>{category} Section</Title>
         <FilterContainer>
              <Filter><Text>Filter Products:</Text>
              <Select name='color' onClick={handleFilters}>

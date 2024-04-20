@@ -3,11 +3,17 @@ import styled from 'styled-components'
 import CategoryItem from './CategoryItem'
 import axios from "axios"
 
-const Container=styled.div`
-display:flex;
-padding:20px;
-justify-content:space-between;
-`
+const Container = styled.div`
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    padding: 10px;
+  }
+  @media (max-width:450px){
+    flex-direction:column;
+  }
+`;
 const Categories = () => {
 
   const [kids,setKids]=useState([]);

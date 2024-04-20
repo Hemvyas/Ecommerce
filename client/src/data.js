@@ -1,33 +1,33 @@
-export const apiData=[
-    {
-        id:1,
-        bg:'fbf0f4',
-        img:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu5gMNCH43REIHmQLccZz6ocmhDBU0V7yucw&usqp=CAU',
-        title:"WINTER SALE",
-        desc:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate"
-    },
-    {
-        id:2,
-        bg:'f5fafd',
-        img:'https://i3.wp.com/tellygupshup.com/wp-content/uploads/2021/09/da521cb0a278ecf37c85d933c137a060.jpg',
-        title:"SUMMER SALE",
-        desc:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate"
-    },
-    {
-        id:3,
-        bg:'fcf1ed',
-        img:'https://i.gercekgundem.com/images/posts/201907/119874_640x960.jpg',
-        title:"DIWALI SALE",
-        desc:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate"
-    },
-    {
-        id:4,
-        bg:'fcf1ed',
-        img:'https://diziseti.tv/wp-content/uploads/2020/10/baraj-ayse-resimleri-nazimin-kizi.jpg',
-        title:"HOLI SALE",
-        desc:"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate"
-    }
-]
+export const apiData = [
+  {
+    id: 1,
+    bg: "fbf0f4",
+    img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQu5gMNCH43REIHmQLccZz6ocmhDBU0V7yucw&usqp=CAU",
+    title: "WINTER SALE",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate",
+  },
+  {
+    id: 2,
+    bg: "f5fafd",
+    img: "https://i3.wp.com/tellygupshup.com/wp-content/uploads/2021/09/da521cb0a278ecf37c85d933c137a060.jpg",
+    title: "SUMMER SALE",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate",
+  },
+  {
+    id: 3,
+    bg: "fcf1ed",
+    img: "https://i.gercekgundem.com/images/posts/201907/119874_640x960.jpg",
+    title: "DIWALI SALE",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate",
+  },
+  {
+    id: 4,
+    bg: "fcf1ed",
+    img: "https://www.kimnerelidir.com/statik/uploads/1796/galeri_hira-su-yildiz_2.jpg",
+    title: "HOLI SALE",
+    desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in velit nec left ante tempus feugiat sed nec urna. Vestibulum at dui eget nisl aliquam volut pate",
+  },
+];
 
 export const categories=[
     {

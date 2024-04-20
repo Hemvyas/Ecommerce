@@ -7,9 +7,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { logout } from '../redux/userSlice';
-const Container=styled.div`
-height:60px;
-`
+const Container = styled.div`
+  height: 60px;
+`;
 const Wrapper=styled.div`
 padding:10px 20px;
 display:flex;
@@ -17,9 +17,6 @@ align-itens:center;
 justify-content:space-between;
 @media (max-width: 768px) {
     align-items: center;
-  }
-@media (max-width: 380px) {
-    padding: 10px;
   }
 `
 const Left=styled.div`
@@ -42,21 +39,27 @@ flex:1;
 display:flex;
 align-items:center;
 justify-content:flex-end;
+@media (max-width: 630px){
+  display:none;
+}
 `
-const Center=styled.div`
-flex:1;
-text-align:center;
-`
-const Search=styled.div`
+const Center = styled.div`
+  flex: 1;
+  text-align: center;
+  @media (max-width: 620px) {
+    flex: 12;
+  }
+`;
+const Search = styled.div`
 border:0.5px solid lightgray;
 display:flex;
 align-items:center;
 margin-left:25px;
 padding:5px;
-@media (max-width: 768px) {
-    margin-left: 0;
+  @media (max-width: 630px) {
+    display:none;
   }
-`
+`;
 const Input=styled.input`
 border:none;
 width:100%;
@@ -69,18 +72,21 @@ width:100%;
   color:darkgrey;
 }
 `
-const Logo=styled.h1`
-font-weight:bold;
-`
-const Cred=styled.div`
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit; 
+`;
+const Logo = styled.h1`
+  font-weight: bold;
+  @media (max-width: 390px) {
+    font-size: 24px;
+  }
+`;
+const Cred = styled.div`
 font-size:14px;
 cursor:pointer;
 margin-left:25px;
-@media (max-width: 768px) {
-    margin-left: 0;
-    margin-right: 15px;
-  }
-`
+`;
 const Navbar = () => {
   const [search,setSearch]=useState("")
   const [products,setProducts]=useState([])
@@ -146,45 +152,56 @@ const handleClick=()=>{
 
   return (
     <Container>
-    <Wrapper>
-    <Left>
-    <Language>EN</Language>
-    <Search style={{color:"gray",fontSize:16}}>
-    <Input placeholder='Search' value={search} onChange={(e)=>setSearch(e.target.value)} onBlur={handleSearch}/>
-    <SearchOutlinedIcon/>
-    </Search>
-    </Left>
+      <Wrapper>
+        <Left>
+          <Language>EN</Language>
+          <Search style={{ color: "gray", fontSize: 16 }}>
+            <Input
+              placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              onBlur={handleSearch}
+            />
+            <SearchOutlinedIcon />
+          </Search>
+        </Left>
 
+        <Center>
+          <StyledLink to="/">
+            <Logo>VogueVault</Logo>
+          </StyledLink>
+        </Center>
 
-    <Center>
-    <Logo>VogueVault</Logo>
-    </Center>
+        <Right>
+          <Link
+            to="/register"
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <Cred>Register</Cred>
+          </Link>
 
+          {isLoggedIn ? (
+            <Cred onClick={handleClick}>Sign Out</Cred>
+          ) : (
+            <Link
+              to="/login"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              <Cred>Sign In</Cred>
+            </Link>
+          )}
 
-    <Right>
-    <Link to='/register' style={{textDecoration:"none",color:"inherit"}}>
-    <Cred>Register</Cred>
-    </Link>
-
-    {isLoggedIn ?(
-        <Cred onClick={handleClick}>Sign Out</Cred>
-    ):(
-      <Link to="/login" style={{textDecoration:"none",color:"inherit"}}>
-    <Cred>Sign In</Cred>
-    </Link> 
-    )}
-    
-    <Link to='/cart'>
-    <Cred>
- <Badge badgeContent={cart} color="primary">
-  <ShoppingCartOutlinedIcon color="action"/>
-    </Badge>    
-    </Cred>
-    </Link>
-    </Right>
-    </Wrapper>
+          <Link to="/cart">
+            <Cred>
+              <Badge badgeContent={cart} color="primary">
+                <ShoppingCartOutlinedIcon color="action" />
+              </Badge>
+            </Cred>
+          </Link>
+        </Right>
+      </Wrapper>
     </Container>
-  )
+  );
 }
 
 export default Navbar

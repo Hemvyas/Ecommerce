@@ -16,10 +16,14 @@ import 'react-toastify/dist/ReactToastify.css';
 const Container=styled.div`
 
 `
-const Wrapper=styled.div`
-padding:50px;
-display:flex;
-`
+const Wrapper = styled.div`
+  padding: 50px;
+  display: flex;
+  @media (max-width: 990px) {
+    padding:10px;
+    flex-direction:column
+  }
+`;
 const ImgContainer=styled.div`
 flex:1;
 position:relative;
@@ -27,27 +31,39 @@ position:relative;
   opacity:1;
 }
 `
-const Image=styled.img`
-width:100%;
-height:90vh;
-object-fit:cover;
-`
-const ColorImg=styled.img`
-width:100%;
-height:90vh;
-object-fit:cover;
-opacity:0;
-position:absolute;
-top:0;
-left:0;
-transition: 0.3s opacity background ease-in-out;
-`
+const Image = styled.img`
+  width: 100%;
+  height: 90vh;
+  object-fit: cover;
+  @media (max-width: 990px) {
+    height: 60vh;
+  }
+  @media (max-width: 400px) {
+    height: 40vh;
+  }
+`;
+const ColorImg = styled.img`
+  width: 100%;
+  height: 90vh;
+  object-fit: cover;
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transition: 0.3s opacity background ease-in-out;
+  @media (max-width: 990px) {
+    height: 60vh;
+  }
+  @media (max-width: 400px) {
+    height: 40vh;
+  }
+`;
 const Title=styled.h1`
-font-weight:200;
+font-weight:600;
 `
 const Desc=styled.p`
 margin:20px 0px;
-`
+`;
 const Types=styled.p`
 font-weight:100;
 font-size:21px;
@@ -56,10 +72,13 @@ const Price=styled.p`
 font-weight:100;
 font-size:40px;
 `
-const Info=styled.div`
-flex:1;
-padding:0px 50px;
-`
+const Info = styled.div`
+  flex: 1;
+  padding: 0px 50px;
+  @media (max-width: 390px) {
+    padding:10px;
+  }
+`;
 const FilterContainer=styled.div`
 display:flex;
 justify-content:space-between;
@@ -86,12 +105,15 @@ const FilterSize=styled.p`
 margin-left:10px;
 padding:6px;
 `
-const AddContainer=styled.div`
-display:flex;
-align-items:center;
-justify-content:space-between;
-width:50%;
-`
+const AddContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 50%;
+  @media (max-width: 390px) {
+    width:100%;
+  }
+`;
 const Quantity=styled.div`
 display:flex;
 align-items:center;
@@ -130,6 +152,11 @@ const Recommendation=styled.div`
 background:#fbf0f4;
 padding:10px;
 `
+const Show=styled.span`
+cursor:pointer;
+font-size:15px;
+text-decoration:underline;
+`
 
 
 
@@ -139,6 +166,7 @@ const Product = () => {
   const [product,setProduct]=useState({});
   const [quantity,setQuantity]=useState(1);
    const [recomendedProducts,setRecommendedProducts]=useState([]);
+   const [show, setShow] = useState(false);
    const dispatch=useDispatch();
 
    const toastOptions={
@@ -191,8 +219,7 @@ const Product = () => {
     }
   }
 
-
-
+const maxDesc=400;
 
   return (
     <Container>
@@ -209,7 +236,8 @@ const Product = () => {
             </Title>
             <Desc>
             <h4>Description:</h4>
-             {product.desc}
+            {product.desc?.length>maxDesc && !show ? `${product.desc?.substring(0,maxDesc)}...`:product.desc}
+            {product.desc?.length>maxDesc && (<Show onClick={()=>setShow(!show)}>{show?"Show Less":"Show More"}</Show>)}
             </Desc>
             <Types>
          Type:{product.types}

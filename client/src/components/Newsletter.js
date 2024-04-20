@@ -12,33 +12,48 @@ flex-direction:column;
 const Title=styled.h1`
 font-size:70px;
 margin-bottom:20px;
+@media (max-width:500px){
+  font-size:60px;
+}
 `
-const Description=styled.div`
-font-size:24px;;
-font-weight:300;
-margin-bottom:20px;
-`
-const InputContainer=styled.div`
-width:50%;
-height:45px;
-background:#fff;
-display:flex;
-justify-content:space-between;
-border:1px solid lightgray;
-`
+const Description = styled.div`
+  font-size: 24px;
+  font-weight: 300;
+  margin-bottom: 20px;
+  @media (max-width: 768px) {
+    text-align: center;
+  }
+  @media (max-width: 500px) {
+    font-size: 20px;
+  }
+`;
+const InputContainer = styled.div`
+  width: 50%;
+  height: 45px;
+  background: #fff;
+  display: flex;
+  justify-content: space-between;
+  border: 1px solid lightgray;
+  @media (max-width: 400px) {
+    width: 80%;
+  }
+`;
 const Input=styled.input`
 flex:8;
 border:none;
 padding-left:20px;
 `
-const Button=styled.button`
-flex:1;
-color:#fff;
-background:teal;
-cursor:pointer;
-border-radius:3px;
-border:none;
-`
+const Button = styled.button`
+  flex: 1;
+  color: #fff;
+  background: teal;
+  cursor: pointer;
+  border-radius: 3px;
+  border: none;
+  @media (max-width: 650px) {
+    padding:10px;
+  }
+`;
 const Newsletter = () => {
   return (
     <Container>

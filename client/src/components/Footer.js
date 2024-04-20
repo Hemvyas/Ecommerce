@@ -7,15 +7,24 @@ import YouTubeIcon from '@mui/icons-material/YouTube';
 import RoomIcon from '@mui/icons-material/Room';
 import PhoneIcon from '@mui/icons-material/Phone';
 import MailOutlineIcon from '@mui/icons-material/MailOutline';
-const Container=styled.div`
-display:flex;
-`
-const Left=styled.div`
-flex:1;
-display:flex;
-flex-direction:column;
-padding:20px;
-`
+const Container = styled.div`
+  display: flex;
+  @media (max-width: 650px) {
+    flex-direction: column;
+  }
+`;
+const Left = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  @media (max-width: 740px) {
+    padding: 15px;
+  }
+  @media (max-width: 650px) {
+    align-items:center;
+  }
+`;
 const Logo=styled.h1`
 
 `
@@ -37,10 +46,19 @@ align-items:center;
 margin-right:20px;
 cursor:pointer;
 `
-const Center=styled.div`
-flex:1;
-padding:20px;
-`
+const Center = styled.div`
+  flex: 1;
+  padding: 20px;
+  @media (max-width: 740px) {
+    padding: 15px;
+  }
+  @media (max-width: 650px) {
+    align-items: center;
+  }
+  @media (max-width: 390px) {
+    display: none;
+  }
+`;
 const Title=styled.h3`
 margin-bottom:30px;
 `
@@ -55,15 +73,23 @@ const Items=styled.li`
 width:50%;
 margin-bottom:10px;
 `
-const Right=styled.div`
-flex:1;
-padding:20px;
-`
-const Contact=styled.div`
-margin-bottom:20px;
-display:flex;
-align-items:center;
-`
+const Right = styled.div`
+  flex: 1;
+  padding: 20px;
+  @media (max-width: 740px) {
+    padding: 15px;
+  }
+  @media (max-width: 650px) {
+    align-items: center;
+  }
+`;
+const Contact = styled.div`
+  margin-bottom: 20px;
+  display: flex;
+  @media (max-width: 650px) {
+    align-items: center;
+  }
+`;
 const Payment=styled.img`
 width:50%;
 `
@@ -73,7 +99,7 @@ const Footer = () => {
     <Left>
         <Logo>VogueVault</Logo>
         <Desc>
-            ©2023 VogueVault Inc. All rights reserved.<br/>
+            ©2024 VogueVault Inc. All rights reserved.<br/>
         </Desc>
         <SocialMedia>
             <Icon color='385999'>
@@ -91,7 +117,7 @@ const Footer = () => {
         </SocialMedia>
     </Left>
     <Center>
-        <Title>Customer Service</Title>
+        <Title>Customer Services</Title>
         <List>
             <Items>FAQs</Items>
             <Items>Shipping & Returns</Items>
@@ -111,7 +137,7 @@ const Footer = () => {
         <RoomIcon style={{marginRight:"10px"}}/> 541 Wall Street, Whitefield
     </Contact>
     <Contact>
-       <PhoneIcon style={{marginRight:"10px"}}/> +91 212 17 14
+       <PhoneIcon style={{marginRight:"10px"}}/> +91 172 12 14
     </Contact>
     <Contact>
        <MailOutlineIcon style={{marginRight:"10px"}}/> ecom@gmail.com
