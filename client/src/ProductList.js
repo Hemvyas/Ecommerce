@@ -10,6 +10,8 @@ import ProductItem from './components/ProductItem'
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { useSelector } from 'react-redux'
+import CircularProgress from "@mui/material/CircularProgress";
+
 
 const Container=styled.div`
 `
@@ -77,9 +79,17 @@ position:absolute;
 left:50%;
 bottom:8%;
 `
+const Loading = styled.div`
+  position: absolute;
+  left: 50%;
+  top: 20%;
+  transform: translateX(-20%, -50%);
+  font-size: 110px;
+`;
 const ProductList = () => {
     const location=useLocation();
     const category = location.pathname.split('/')[2];
+    const [error, setError] = useState(null);
     const [sort,setSort]=useState("newest")
     const [color, setColor] = useState("color");
     const [types, setTypes] = useState("types");
@@ -99,13 +109,7 @@ const ProductList = () => {
              .get(
                `https://ecommerce-brown-one.vercel.app/api/category/cat/${category}?page=${page}&limit=${limit}`
              )
-             const data=await res.data;
-             if (!data || !data.products) {
-               console.error("Invalid API response", data);
-               setFilteredProducts([]);
-               setTotalPages(0);
-             }else{
-            let filteredProducts=data.products;
+            let filteredProducts=[...res.data.products];
             if(color!=="color"){
               filteredProducts = filteredProducts && filteredProducts.filter(
                 (product) => product.color === color);
@@ -130,11 +134,17 @@ const ProductList = () => {
             }
             filteredProducts=filteredProducts.sort((a,b)=>sort==="asc"?a.price-b.price:b.price-a.price)
             console.log(filteredProducts);
-            setFilteredProducts(filteredProducts);
+           if (
+             filteredProducts &&
+             filteredProducts &&
+             Array.isArray(filteredProducts)
+           ) {
+             setFilteredProducts(filteredProducts);
+           } 
             setTotalPages(res.data.totalPages)
-          }
           } catch (error) {
             console.log(error);
+            setError(error);
           }
             setLoading(false);
           }
@@ -154,9 +164,7 @@ const ProductList = () => {
               value={color}
               onChange={(e) => setColor(e.target.value)}
             >
-              <Option value="">
-                Color
-              </Option>
+              <Option value="">Color</Option>
               <Option value="White">White</Option>
               <Option value="Black">Black</Option>
               <Option value="Maroon">Maroon</Option>
@@ -174,9 +182,7 @@ const ProductList = () => {
               value={size}
               onChange={(e) => setSize(e.target.value)}
             >
-              <Option value="">
-                Size
-              </Option>
+              <Option value="">Size</Option>
               <Option value="XS">XS</Option>
               <Option value="S">S</Option>
               <Option value="M">M</Option>
@@ -188,9 +194,7 @@ const ProductList = () => {
               value={types}
               onChange={(e) => setTypes(e.target.value)}
             >
-              <Option value="">
-                Type
-              </Option>
+              <Option value="">Type</Option>
               <Option value="FLEECE">FLEECE</Option>
               <Option value="HOODIES"> HOODIES</Option>
               <Option value="JACKETS">JACKETS</Option>
@@ -203,9 +207,7 @@ const ProductList = () => {
           <Filter>
             <Text>Sort Products:</Text>
             <Select name="sort" onChange={(e) => setSort(e.target.value)}>
-              <Option value="newest">
-                Newest
-              </Option>
+              <Option value="newest">Newest</Option>
               <Option value="asc">Price (asc)</Option>
               <Option value="desc">Price (desc)</Option>
             </Select>
@@ -213,7 +215,11 @@ const ProductList = () => {
         </FilterContainer>
         <Content>
           {loading ? (
-            <p>Loading...</p>
+            <Loading>
+              <CircularProgress />
+            </Loading>
+          ) : error ? (
+            <p>Error loading products: {error.message}</p>
           ) : Array.isArray(filteredProducts) && filteredProducts.length > 0 ? (
             filteredProducts.map((item) => (
               <ProductItem key={item.id} item={item} />

@@ -101,36 +101,27 @@ router.get("/cat/:category", async (req, res) => {
   const { category } = req.params;
   const { page = 1, limit = 10 } = req.query;
 
-   if (isNaN(page) || page < 1) {
-     return res
-       .status(400)
-       .json({ error: "Page number must be a positive integer." });
-   }
-
-   if (isNaN(limit) || limit < 1) {
-     return res
-       .status(400)
-       .json({ error: "Limit must be a positive integer." });
-   }
-
-  let filterQuery = { category: { $in: [category] } };
+  let filterQuery = { categories: { $in: [category] } };
+  console.log("Constructed filterQuery:", filterQuery);
 
   try {
     const products = await Product.find(filterQuery)
-      .sort({ _id: -1 }) // Sorting by _id to simulate 'newest'; adjust as needed
+      .sort({ _id: -1 })
       .skip((page - 1) * parseInt(limit))
       .limit(parseInt(limit));
 
-    const totalProducts = await Product.countDocuments(filterQuery);
-    const totalPages = Math.ceil(totalProducts / parseInt(limit));
+    console.log("Fetched Products Count:", products.length);
 
+    const totalProducts = await Product.countDocuments(filterQuery);
+    console.log("Total Products for category:", totalProducts);
+
+    const totalPages = Math.ceil(totalProducts / parseInt(limit));
     res.status(200).json({ products, totalPages });
   } catch (error) {
+    console.error("Error fetching products:", error);
     res.status(500).json(error);
-    console.log(error);
   }
 });
-
 
 
 

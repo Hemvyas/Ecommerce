@@ -27,6 +27,7 @@ app.use('/api/order',orderRoute);
 app.use('/api/category',categoryRoute)
 app.use('/api/stripe',stripeRoute)
 
+
 mongoose.connect(process.env.MONGODB_URI).then(()=>{
 console.log("DB Connected");
 }).catch((err)=>{
