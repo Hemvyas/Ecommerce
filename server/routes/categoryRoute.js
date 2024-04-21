@@ -102,7 +102,6 @@ router.get("/cat/:category", async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
   let filterQuery = { categories: { $in: [category] } };
-  console.log("Constructed filterQuery:", filterQuery);
 
   try {
     const products = await Product.find(filterQuery)
@@ -110,10 +109,8 @@ router.get("/cat/:category", async (req, res) => {
       .skip((page - 1) * parseInt(limit))
       .limit(parseInt(limit));
 
-    console.log("Fetched Products Count:", products.length);
 
     const totalProducts = await Product.countDocuments(filterQuery);
-    console.log("Total Products for category:", totalProducts);
 
     const totalPages = Math.ceil(totalProducts / parseInt(limit));
     res.status(200).json({ products, totalPages });

@@ -53,24 +53,29 @@ justify-content:space-between;
 flex-wrap:wrap;
 padding:20px;
 `
-const Arrow=styled.div`
-width:50px;
-height:50px;
-background:#fff7f7;
-border-radius:50%;
-display:flex;
-justify-content:center;
-align-items:center;
-cursor:pointer;
-position:absolute;
-top:0;
-bottom:0;
-margin:auto;
-left:${props=>props.direction ==="left" && "200px"};
-right:${props=>props.direction ==="right" && "200px"};
-opacity:0.5;
-z-index:1;
-`
+const Arrow = styled.div`
+  width: 50px;
+  height: 50px;
+  background: #fff7f7;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  left: ${(props) => (props.direction === "left" ? "200px" : "unset")};
+  right: ${(props) => (props.direction === "right" ? "200px" : "unset")};
+  transform: rotate(0deg);
+  opacity: 0.5;
+  z-index: 1;
+  @media (max-width: 629px) {
+    left: ${(props) => (props.direction === "left" ? "10px" : "unset")};
+    right: ${(props) => (props.direction === "right" ? "10px" : "unset")};
+  }
+`;
 const Pagination=styled.div`
 position:relative;
 `
@@ -164,7 +169,7 @@ const ProductList = () => {
               value={color}
               onChange={(e) => setColor(e.target.value)}
             >
-              <Option value="">Color</Option>
+              <Option value="color">Color</Option>
               <Option value="White">White</Option>
               <Option value="Black">Black</Option>
               <Option value="Maroon">Maroon</Option>
@@ -182,7 +187,7 @@ const ProductList = () => {
               value={size}
               onChange={(e) => setSize(e.target.value)}
             >
-              <Option value="">Size</Option>
+              <Option value="size">Size</Option>
               <Option value="XS">XS</Option>
               <Option value="S">S</Option>
               <Option value="M">M</Option>
@@ -194,7 +199,7 @@ const ProductList = () => {
               value={types}
               onChange={(e) => setTypes(e.target.value)}
             >
-              <Option value="">Type</Option>
+              <Option value="types">Type</Option>
               <Option value="FLEECE">FLEECE</Option>
               <Option value="HOODIES"> HOODIES</Option>
               <Option value="JACKETS">JACKETS</Option>
