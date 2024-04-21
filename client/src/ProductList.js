@@ -87,8 +87,8 @@ bottom:8%;
 const Loading = styled.div`
   position: absolute;
   left: 50%;
-  top: 20%;
-  transform: translateX(-20%, -50%);
+  top: 50%;
+  transform: translateX(-50%, -50%);
   font-size: 110px;
 `;
 const ProductList = () => {
