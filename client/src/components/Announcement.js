@@ -14,7 +14,6 @@ const Container = styled.div`
 
 const Announcement = () => {
   const calculateTimeLeft = () => {
-    // Adjust the end time to your local timezone
     const endTime = new Date("2024-07-26T23:59:59");
     const now = new Date();
     const difference = endTime.getTime() - now.getTime();

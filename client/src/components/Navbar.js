@@ -34,13 +34,13 @@ const Left = styled.div`
   }
 `;
 
-const Language = styled.span`
-  font-size: 14px;
-  cursor: pointer;
-  @media (max-width: 768px) {
-    display: none;
-  }
-`;
+// const Language = styled.span`
+//   font-size: 14px;
+//   cursor: pointer;
+//   @media (max-width: 768px) {
+//     display: none;
+//   }
+// `;
 
 const Right = styled.div`
   flex: 1;
@@ -126,7 +126,7 @@ const Navbar = () => {
     <Container>
       <Wrapper>
         <Left>
-          <Language>EN</Language>
+          {/* <Language>EN</Language> */}
           <Search />
         </Left>
 
