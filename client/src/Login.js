@@ -114,9 +114,7 @@ const handleLogin = async (e) => {
                 <BUTTON onClick={handleLogin} disabled={isLoggedIn}>LOGIN</BUTTON>
                 {error && <Error>Something went wrong!</Error>}
                 <Links>
-                <Link to='/jde' style={{color:"inherit"}}>Forget Passoword?</Link>
-                <br/><br/>
-                <Link to="/" style={{color:"inherit"}}>Create a New Account</Link>
+                <Link to="/register" style={{color:"inherit"}}>Create a New Account</Link>
                 </Links>
             </FORM>
         </Wrapper>
