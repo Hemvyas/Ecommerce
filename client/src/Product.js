@@ -197,7 +197,9 @@ const Product = () => {
   useEffect(() => {
     const recomend=async()=>{
       try {
-        const res=await axios.get(`http://localhost:5000/api/category/recomend/${id}`);
+        const res = await axios.get(
+          `https://ecommerce-brown-one.vercel.app/api/category/recomend/${id}`
+        );
         setRecommendedProducts(res.data);
       } catch (error) {
         console.log(error);
