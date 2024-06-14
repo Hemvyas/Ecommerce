@@ -3,8 +3,6 @@ import Navbar from "./components/Navbar"
 import Announcement from "./components/Announcement"
 import Footer from "./components/Footer"
 import styled from 'styled-components'
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import DeleteOutlinedIcon from '@mui/icons-material/DeleteOutlined';
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -151,15 +149,35 @@ const key =
  const onToken = (token) => {
    setToken(token);
  };
- console.log(token);
 useEffect(()=>{
   const req=async()=>{
     try {
-      const res=await axios.post("http://localhost:5000/api/stripe/payment",{
-        tokenId:token.id,
-        amount:cart.total*100,
-      })
-      navigate("/success",{data:res.data});
+      const res = await axios.post("http://localhost:5000/api/stripe/payment", {
+        tokenId: token.id,
+        amount: cart.total * 100,
+        shippingAddress: {
+          line1: token.card.address_line1,
+          city: token.card.address_city,
+          postal_code: token.card.address_zip,
+          country: token.card.address_country,
+        },
+        shippingName: token.card.name,
+      });
+       const orderId = res.data.id;
+       const totalAmount = res.data.amount / 100;
+      navigate("/success", {
+        state: {
+          orderId,
+          totalAmount,
+          shippingAddress: {
+            line1: token.card.address_line1,
+            city: token.card.address_city,
+            postal_code: token.card.address_zip,
+            country: token.card.address_country,
+          },
+          shippingName: token.card.name,
+        },
+      });
     } catch (error) {
       console.log(error);
       toast.error("Failed to process payment. Please try again later.");
@@ -236,9 +254,7 @@ const toastOptions={
                 </ProductInfo>
                 <Price>
                   <Quantity>
-                    <AddOutlinedIcon />
                     <ProductQuantity>{product.quantity}</ProductQuantity>
-                    <RemoveOutlinedIcon />
                   </Quantity>
                   <ProductPrice>
                     $ {product.price * product.quantity}

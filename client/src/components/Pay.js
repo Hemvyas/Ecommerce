@@ -15,7 +15,7 @@ const Pay = () => {
             try {
                 const res=await axios.post("http://localhost:5000/api/stripe/payment",{
                 tokenId:token.id,
-                amount:2000            
+                amount:2000,            
             })   
             console.log(res.data);
             } catch (error) {
