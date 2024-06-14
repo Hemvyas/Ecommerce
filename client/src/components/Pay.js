@@ -2,11 +2,12 @@ import React, { useEffect, useState } from 'react'
 import StripeCheckout from "react-stripe-checkout"
 import axios from "axios"
 
-const key="pk_test_51OOKNlSJrhaILpp92Nl5MEik6Q00mAekKGiVNGiwqWLJ7Q7B0emjITRdKvSBOnImsjgz0t7U8MLWyUekLicvhMMU00BxQtfzpI"
+const key ="pk_test_51OOKNlSJrhaILpp92Nl5MEik6Q00mAekKGiVNGiwqWLJ7Q7B0emjITRdKvSBOnImsjgz0t7U8MLWyUekLicvhMMU00BxQtfzpI";
 
 const Pay = () => {
     const [token,setToken]=useState(null)
     const onToken=(token)=>{
+        console.log(token);
         setToken(token);
     }
     useEffect(()=>{
@@ -22,7 +23,7 @@ const Pay = () => {
             }
             
         } 
-        token && payment();
+        if (token) payment();
     },[token])
   return (
     <div style={{

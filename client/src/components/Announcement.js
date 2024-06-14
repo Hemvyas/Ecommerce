@@ -11,6 +11,18 @@ const Container = styled.div`
   font-weight: 500;
   font-size: 14px;
 `;
+const Offer = styled.div`
+  @media (max-width: 420px) {
+    font-size: 13px;
+  }
+  @media (max-width: 385px) {
+    font-size: 12px;
+  }
+  @media (max-width: 350px) {
+    font-size: 10px;
+    font-weight:700;
+  }
+`;
 
 const Announcement = () => {
   const calculateTimeLeft = () => {
@@ -58,8 +70,10 @@ const Announcement = () => {
 
   return (
     <Container>
-      Flash Sale! Limited time offer ends in{" "}
-      {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+      <Offer>
+        Flash Sale! Limited time offer ends in
+        {timerComponents.length ? timerComponents : <span>Time's up!</span>}
+      </Offer>
     </Container>
   );
 };

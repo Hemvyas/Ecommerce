@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from "./components/Navbar"
 import Announcement from "./components/Announcement"
 import Footer from "./components/Footer"
@@ -11,6 +11,8 @@ import { useNavigate } from 'react-router-dom'
 import { clearCart, removerFromCart } from './redux/cartSlice'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import StripeCheckout from 'react-stripe-checkout'
+import axios from "axios"
 const Container=styled.div``
 const Wrapper = styled.div`
   padding: 20px;
@@ -141,8 +143,31 @@ top:190px;
 
 const Cart = () => {
 const cart=useSelector(state=>state.cart)
+ const [token, setToken] = useState(null);
 const dispatch=useDispatch();
 const navigate=useNavigate();
+const key =
+  "pk_test_51OOKNlSJrhaILpp92Nl5MEik6Q00mAekKGiVNGiwqWLJ7Q7B0emjITRdKvSBOnImsjgz0t7U8MLWyUekLicvhMMU00BxQtfzpI";
+ const onToken = (token) => {
+   setToken(token);
+ };
+ console.log(token);
+useEffect(()=>{
+  const req=async()=>{
+    try {
+      const res=await axios.post("http://localhost:5000/api/stripe/payment",{
+        tokenId:token.id,
+        amount:cart.total*100,
+      })
+      navigate("/success",{data:res.data});
+    } catch (error) {
+      console.log(error);
+      toast.error("Failed to process payment. Please try again later.");
+    }
+  }
+  token && cart.total>=1 && req();
+},[token,cart.total,navigate])
+
 
 const handleRemove=(productId)=>{
     toast.success("Item Removed From Cart!",toastOptions);
@@ -172,77 +197,100 @@ const toastOptions={
     
   return (
     <Container>
-        <Navbar/>
-        <Announcement/>
-        <Wrapper>
-<Title>Your Bag</Title>
-<Top>
-<Button onClick={()=>handleClick()}>CONTINUE SHOPPING</Button>
-    
-    <Content>
-    <Text>Shopping Bag({cart.cart})</Text>
-    <Text>Your Wishlist(0)</Text>
-    </Content>
-    <Button type='filled' onClick={()=>handleCLear()}>CLEAR BAG</Button>
-</Top>
-<Bottom>
-    <Info>
+      <Navbar />
+      <Announcement />
+      <Wrapper>
+        <Title>Your Bag</Title>
+        <Top>
+          <Button onClick={() => handleClick()}>CONTINUE SHOPPING</Button>
 
-    {cart.products.map((product)=>(
-    <Product>
-    <ProductInfo>
-    <Image src={product.mainImg}/>  
-    <Details>
-        <Name><b>Product:</b>{product.title}</Name>
-        <ID><b>ID:</b>{product._id}</ID>
-        <Color color={product.color}/>
-        <Size><b>Size:</b>{product.size}</Size>
-    </Details>
-    </ProductInfo>
-    <Price>
-        <Quantity>
-            <AddOutlinedIcon/>
-            <ProductQuantity>{product.quantity}</ProductQuantity>
-            <RemoveOutlinedIcon/>
-        </Quantity>
-        <ProductPrice>$ {product.price *product.quantity}</ProductPrice>
-    </Price>
-    <DeleteProduct>
-    <DeleteOutlinedIcon onClick={()=>handleRemove(product._id)} />
-    </DeleteProduct>
+          <Content>
+            <Text>Shopping Bag({cart.cart})</Text>
+            <Text>Your Wishlist(0)</Text>
+          </Content>
+          <Button type="filled" onClick={() => handleCLear()}>
+            CLEAR BAG
+          </Button>
+        </Top>
+        <Bottom>
+          <Info>
+            {cart.products.map((product) => (
+              <Product>
+                <ProductInfo>
+                  <Image src={product.mainImg} />
+                  <Details>
+                    <Name>
+                      <b>Product:</b>
+                      {product.title}
+                    </Name>
+                    <ID>
+                      <b>ID:</b>
+                      {product._id}
+                    </ID>
+                    <Color color={product.color} />
+                    <Size>
+                      <b>Size:</b>
+                      {product.size}
+                    </Size>
+                  </Details>
+                </ProductInfo>
+                <Price>
+                  <Quantity>
+                    <AddOutlinedIcon />
+                    <ProductQuantity>{product.quantity}</ProductQuantity>
+                    <RemoveOutlinedIcon />
+                  </Quantity>
+                  <ProductPrice>
+                    $ {product.price * product.quantity}
+                  </ProductPrice>
+                </Price>
+                <DeleteProduct>
+                  <DeleteOutlinedIcon
+                    onClick={() => handleRemove(product._id)}
+                  />
+                </DeleteProduct>
+              </Product>
+            ))}
 
-    </Product>))}
-
-    
-
-<Hr/>
-    </Info>
-    <Summary>
-        <SummaryTitle>ORDER SUMMARY</SummaryTitle>
-        <SummaryItem>
-            <SummaryText>Subtotal</SummaryText>
-            <SummaryPrice>$ {cart.total}</SummaryPrice>
-        </SummaryItem>
-        <SummaryItem>
-            <SummaryText>Estimated Shipping</SummaryText>
-            <SummaryPrice>$ 2</SummaryPrice>
-        </SummaryItem>
-        <SummaryItem>
-            <SummaryText>Discount</SummaryText>
-            <SummaryPrice>$ -10</SummaryPrice>
-        </SummaryItem>
-        <SummaryItem type="total">
-            <SummaryText>Total</SummaryText>
-            <SummaryPrice>$ {cart.total}</SummaryPrice>
-        </SummaryItem>
-        <Button>CHECKOUT NOW</Button>
-    </Summary>
-     </Bottom>
-        </Wrapper>
-        <Footer/>
-        <ToastContainer/>
+            <Hr />
+          </Info>
+          <Summary>
+            <SummaryTitle>ORDER SUMMARY</SummaryTitle>
+            <SummaryItem>
+              <SummaryText>Subtotal</SummaryText>
+              <SummaryPrice>$ {cart.total}</SummaryPrice>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryText>Estimated Shipping</SummaryText>
+              <SummaryPrice>$ 2</SummaryPrice>
+            </SummaryItem>
+            <SummaryItem>
+              <SummaryText>Discount</SummaryText>
+              <SummaryPrice>$ -10</SummaryPrice>
+            </SummaryItem>
+            <SummaryItem type="total">
+              <SummaryText>Total</SummaryText>
+              <SummaryPrice>$ {cart.total}</SummaryPrice>
+            </SummaryItem>
+            <StripeCheckout
+              name="RAMA ECOM"
+              description={`Your total is ${cart.total}`}
+              amount={cart.total*100}
+              billingAddress
+              token={onToken}
+              shippingAddress
+              image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSFeGGx49bYTTAQGQiHl5ohTAc03Vd0mfBmEA&usqp=CAU"
+              stripeKey={key}
+            >
+              <Button>CHECKOUT NOW</Button>
+            </StripeCheckout>
+          </Summary>
+        </Bottom>
+      </Wrapper>
+      <Footer />
+      <ToastContainer />
     </Container>
-  )
+  );
 }
 
 export default Cart

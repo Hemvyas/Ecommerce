@@ -37,7 +37,7 @@ router.get("/womens",async(req,res)=>{
 
 router.get('/random',async(req,res)=>{
     try {
-        const randomProducts=await Product.aggregate([{$sample:{size:10}}])
+        const randomProducts=await Product.aggregate([{$sample:{size:12}}])
         res.status(200).json(randomProducts);
     } catch (error) {
         console.log(error);
