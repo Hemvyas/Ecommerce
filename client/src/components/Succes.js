@@ -60,7 +60,7 @@ const Success = () => {
       </Info>
       <Info>User Name: {shippingName}</Info>
       <Button onClick={() => navigate("/")}>Go to Home</Button>
-      <Button onClick={() => navigate("/orders")}>View Orders</Button>
+      {/* <Button onClick={() => navigate("/orders")}>View Orders</Button> */}
     </SuccessContainer>
   );
 };
