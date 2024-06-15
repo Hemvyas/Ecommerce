@@ -152,17 +152,20 @@ const key =
 useEffect(()=>{
   const req=async()=>{
     try {
-      const res = await axios.post("http://localhost:5000/api/stripe/payment", {
-        tokenId: token.id,
-        amount: cart.total * 100,
-        shippingAddress: {
-          line1: token.card.address_line1,
-          city: token.card.address_city,
-          postal_code: token.card.address_zip,
-          country: token.card.address_country,
-        },
-        shippingName: token.card.name,
-      });
+      const res = await axios.post(
+        "https://ecommerce-brown-one.vercel.app/api/stripe/payment",
+        {
+          tokenId: token.id,
+          amount: cart.total * 100,
+          shippingAddress: {
+            line1: token.card.address_line1,
+            city: token.card.address_city,
+            postal_code: token.card.address_zip,
+            country: token.card.address_country,
+          },
+          shippingName: token.card.name,
+        }
+      );
        const orderId = res.data.id;
        const totalAmount = res.data.amount / 100;
       navigate("/success", {
