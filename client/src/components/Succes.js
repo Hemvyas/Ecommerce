@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { clearCart } from "../redux/cartSlice";
 
 const SuccessContainer = styled.div`
   display: flex;
@@ -42,6 +44,11 @@ const Button = styled.button`
 const Success = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(clearCart());
+  }, [dispatch]);
+
   const { orderId, totalAmount, shippingAddress, shippingName } =
     location.state || {};
 
@@ -59,7 +66,7 @@ const Success = () => {
         {shippingAddress.postal_code}, {shippingAddress.country}
       </Info>
       <Info>User Name: {shippingName}</Info>
-      <Button onClick={() => navigate("/")}>Go to Home</Button>
+      <Button onClick={() => navigate("/")}>Contine Shopping</Button>
       {/* <Button onClick={() => navigate("/orders")}>View Orders</Button> */}
     </SuccessContainer>
   );

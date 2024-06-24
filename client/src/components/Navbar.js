@@ -5,7 +5,6 @@ import ShoppingCartOutlinedIcon from '@mui/icons-material/ShoppingCartOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { logout } from '../redux/userSlice';
-import Search from './Search';
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 
@@ -25,14 +24,6 @@ const Wrapper = styled.div`
   }
 `;
 
-const Left = styled.div`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  @media (max-width: 768px) {
-    margin-right: 20px;
-  }
-`;
 
 // const Language = styled.span`
 //   font-size: 14px;
@@ -125,10 +116,6 @@ const Navbar = () => {
   return (
     <Container>
       <Wrapper>
-        <Left>
-          {/* <Language>EN</Language> */}
-          <Search />
-        </Left>
 
         <Center>
           <StyledLink to="/">
