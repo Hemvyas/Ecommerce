@@ -138,7 +138,6 @@ const ProductList = () => {
               product.types.toLowerCase().includes(searchQuery.toLowerCase()))
             }
             filteredProducts=filteredProducts.sort((a,b)=>sort==="asc"?a.price-b.price:b.price-a.price)
-            console.log(filteredProducts);
            if (
              filteredProducts &&
              filteredProducts &&

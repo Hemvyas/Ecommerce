@@ -49,17 +49,17 @@ const Success = () => {
     dispatch(clearCart());
   }, [dispatch]);
 
-  const { orderId, totalAmount, shippingAddress, shippingName } =
+  const { paymentId, totalAmount, shippingAddress, shippingName } =
     location.state || {};
-
-  if (!orderId || !totalAmount || !shippingAddress || !shippingName) {
+console.log(paymentId, totalAmount, shippingAddress, shippingName);
+  if (!paymentId || !totalAmount || !shippingAddress || !shippingName) {
     return <div>Error: Missing order details.</div>;
   }
 
   return (
     <SuccessContainer>
       <Title>Payment Success!</Title>
-      <Info>Your Payment ID: {orderId}</Info>
+      <Info>Your Payment ID: {paymentId}</Info>
       <Info>Total Amount: ${totalAmount}</Info>
       <Info>
         Shipping Address: {shippingAddress.line1}, {shippingAddress.city},{" "}

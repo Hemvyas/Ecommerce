@@ -146,6 +146,7 @@ const EmptyCartMessage = styled.div`
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
+  const user = useSelector((state) => state.user.currentUser);
   const [token, setToken] = useState(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -172,11 +173,11 @@ const Cart = () => {
             shippingName: token.card.name,
           }
         );
-        const orderId = res.data.id;
+        const paymentId = res.data.id;
         const totalAmount = res.data.amount / 100;
         navigate("/success", {
           state: {
-            orderId,
+            paymentId,
             totalAmount,
             shippingAddress: {
               line1: token.card.address_line1,
@@ -194,6 +195,32 @@ const Cart = () => {
     };
     token && cart.total >= 1 && req();
   }, [token, cart.total, navigate]);
+
+
+  const handleCheckout=async()=>{
+    const API_URL = "https://ecommerce-brown-one.vercel.app";
+    const token=user.token;
+    try {
+      const res = await axios.post(
+        `${API_URL}/api/order`,
+        {
+          userId: user.other._id,
+          products: cart.products,
+          totalPrice: cart.total,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
+      console.log(res.data);
+      dispatch(clearCart());
+    } catch (error) {
+       console.error("Error creating order:", error);
+    }
+  }
 
   const handleRemove = (productId) => {
     toast.success("Item Removed From Cart!", toastOptions);
@@ -304,7 +331,7 @@ const Cart = () => {
                 image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLeqFAy5MP-HSA6P1-ERIzL-RV61tlji9O5j8NgJVRcp95EGMp-g9vgo0WcD8ZukxQlS4&usqp=CAU"
                 stripeKey={key}
               >
-                <Button type="filled">CHECKOUT NOW</Button>
+                <Button type="filled" onClick={handleCheckout}>CHECKOUT NOW</Button>
               </StripeCheckout>
             </Summary>
           </Bottom>
