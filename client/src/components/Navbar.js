@@ -129,7 +129,7 @@ const Navbar = () => {
 
         <Right open={open}>
           <StyledLink to="/register" style={{ textDecoration: "none", color: "inherit" }}>
-            <Cred>Register</Cred>
+            {!isLoggedIn?(<Cred>Register</Cred>):(<></>)}
           </StyledLink>
 
           {isLoggedIn ? (
