@@ -14,11 +14,19 @@ display:flex;
 justify-content:center;
 align-items:center;
 `
-const Wrapper=styled.div`
-padding:20px;
-width:25%;
-background:#fff;
-`
+const Wrapper = styled.div`
+  padding: 20px;
+  width: 40%;
+  background: #fff;
+  @media (max-width: 450px) {
+    padding: 30px;
+    width: 45%;
+  }
+  @media (max-width: 350px) {
+    padding: 40px;
+    width: 50%;
+  }
+`;
 const Title=styled.h1`
 font-size:24px;
 font-weight:500;
@@ -34,19 +42,25 @@ const FORM=styled.form`
 display:flex;
 flex-direction:column;
 `
-const BUTTON=styled.button`
-padding:15px 20px;
-width:40%;
-border:none;
-background:teal;
-color:#fff;
-cursor:pointer;
-margin-bottom:10px;
-&:disabled{
-  color:green;
-  cursor:not-allowed;
-}
-`
+const BUTTON = styled.button`
+  padding: 15px 20px;
+  width: 40%;
+  border: none;
+  background: teal;
+  color: #fff;
+  cursor: pointer;
+  margin-bottom: 10px;
+  &:disabled {
+    color: green;
+    cursor: not-allowed;
+  }
+  @media (max-width: 460px) {
+    width: 50%;
+  }
+  @media (max-width: 330px) {
+    width: 55%;
+  }
+`;
 const Links=styled.div`
 margin:5px 0px;
 cursor:pointer;
@@ -54,7 +68,10 @@ font-size:14px;
 
 `
 const Error=styled.span`
-color:red
+color:red;
+@media (max-width:330px){
+  font-size:15px;
+}
 `
 const Login = () => {
   const dispatch=useDispatch();

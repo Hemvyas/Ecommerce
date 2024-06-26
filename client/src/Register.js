@@ -33,19 +33,28 @@ margin:20px 10px 0px 0px;
 const Agreement=styled.span`
 font-sixe:12px;
 margin:20px 0px;
+@media(max-width:370px){
+  font-size:11px;
+}
 `
 const FORM=styled.form`
 display:flex;
 flex-wrap:wrap;
 `
-const BUTTON=styled.button`
-padding:15px 20px;
-width:40%;
-border:none;
-background:teal;
-color:#fff;
-cursor:pointer;
-`
+const BUTTON = styled.button`
+  padding: 15px 20px;
+  width: 40%;
+  border: none;
+  background: teal;
+  color: #fff;
+  cursor: pointer;
+  @media (max-width: 500px) {
+    width: 55%;
+  }
+  @media (max-width: 380px) {
+    width: 70%;
+  }
+`;
 const Register = () => {
   const [username,setUsername]=useState("");
   const [email,setEmail]=useState("");
