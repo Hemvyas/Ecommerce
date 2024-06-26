@@ -19,6 +19,10 @@ const Wrapper = styled.div`
 const Title = styled.h1`
   font-weight: 300;
   text-align: center;
+  @media (max-width: 370px) {
+    font-weight:200;
+    font-size:27px;
+  }
 `;
 const Top = styled.div`
   display: flex;
@@ -32,6 +36,9 @@ const Button = styled.button`
   border: ${(props) => props.type === "filled" && "none"};
   background: ${(props) => (props.type === "filled" ? "black" : "transparent")};
   color: ${(props) => props.type === "filled" && "white"};
+  @media (max-width: 370px) {
+    padding:8px;
+  }
 `;
 const Content = styled.div``;
 const Text = styled.span`
@@ -147,8 +154,12 @@ const DeleteProduct = styled.span`
     color: #ff6347;
   }
   @media (max-width: 480px) {
-    right:10px;
-    top:120px;
+    right: 10px;
+    top: 120px;
+  }
+  @media (max-width: 325px) {
+    right: 10px;
+    top: 90px;
   }
 `;
 
