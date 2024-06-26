@@ -15,9 +15,6 @@ import axios from "axios";
 const Container = styled.div``;
 const Wrapper = styled.div`
   padding: 20px;
-  @media (max-width: 390px) {
-    padding: 10px;
-  }
 `;
 const Title = styled.h1`
   font-weight: 300;
@@ -40,19 +37,22 @@ const Content = styled.div``;
 const Text = styled.span`
   text-decoration: underline;
   cursor: pointer;
-  @media (max-width: 390px) {
+  @media (max-width: 514px) {
     display: none;
   }
 `;
 const Bottom = styled.div`
   display: flex;
   justify-content: space-between;
-  @media (max-width: 390px) {
+  @media (max-width: 688px) {
     flex-direction: column;
   }
 `;
 const Info = styled.div`
-  flex: 3;
+  flex: 2;
+  @media (max-width: 480px) {
+    padding:10px;
+  }
 `;
 const Summary = styled.div`
   flex: 1;
@@ -64,9 +64,6 @@ const Summary = styled.div`
 const Product = styled.div`
   display: flex;
   justify-content: center;
-  @media (max-width: 390px) {
-    flex-direction: column;
-  }
 `;
 const ProductInfo = styled.div`
   flex: 2;
@@ -74,50 +71,63 @@ const ProductInfo = styled.div`
 `;
 const Image = styled.img`
   width: 200px;
+  heigght: 200px;
   margin: 10px 0px;
+  @media (max-width: 480px) {
+    width: 150px;
+    height: 150px;
+  }
+  @media (max-width: 440px) {
+    width: 140px;
+    height: 140px;
+  }
+  @media (max-width: 400px) {
+    width: 130px;
+    height: 130px;
+  }
+  @media (max-width: 375px) {
+    width: 90px;
+    height: 130px;
+  }
+  @media (max-width: 325px) {
+    width: 60px;
+    height: 100px;
+  }
 `;
 const Name = styled.span``;
 const Details = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: space-between;
+  @media (max-width: 400px) {
+    padding: 10px;
+  }
+  @media (max-width: 390px) {
+    font-size:16px;
+  }
+  @media (max-width: 330px) {
+    font-size: 12px;
+  }
 `;
 const ID = styled.span``;
 const Size = styled.span``;
-const Price = styled.span`
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-`;
-const Color = styled.span`
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: ${(props) => props.color};
-`;
-const Quantity = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-`;
-const ProductQuantity = styled.div`
-  font-size: 24px;
-  margin: 5px;
-`;
-const ProductPrice = styled.div`
-  font-size: 30px;
-  font-weight: 200;
-`;
+const Quantity = styled.span``;
+const ProductPrice = styled.span``;
 const Hr = styled.hr`
   background: #eee;
   border: none;
   height: 1px;
+  @media (max-width: 688px) {
+    display:none;
+  }
 `;
 const SummaryTitle = styled.h1`
   font-weight: 200;
+  @media (max-width: 340px) {
+    font-weight:100;
+    font-size:30px;
+  }
 `;
 const SummaryPrice = styled.span``;
 const SummaryText = styled.span``;
@@ -132,8 +142,13 @@ const DeleteProduct = styled.span`
   cursor: pointer;
   position: relative;
   top: 190px;
+  right: 50px;
   &:hover {
     color: #ff6347;
+  }
+  @media (max-width: 480px) {
+    right:10px;
+    top:120px;
   }
 `;
 
@@ -196,13 +211,14 @@ const Cart = () => {
     token && cart.total >= 1 && req();
   }, [token, cart.total, navigate]);
 
-
+const handleLogin=async()=>{
+      navigate("/login");
+}
   const handleCheckout=async()=>{
-    const API_URL = "https://ecommerce-brown-one.vercel.app";
     const token=user.token;
     try {
       const res = await axios.post(
-        `${API_URL}/api/order`,
+        "https://ecommerce-brown-one.vercel.app/api/order",
         {
           userId: user.other._id,
           products: cart.products,
@@ -280,20 +296,19 @@ const Cart = () => {
                       <ID>
                         <b>ID:</b> {product._id}
                       </ID>
-                      <Color color={product.color} />
+
                       <Size>
                         <b>Size:</b> {product.size}
                       </Size>
+                      <Quantity>
+                        <b>Quantity:</b>{" "}
+                        {product.quantity}
+                      </Quantity>
+                      <ProductPrice>
+                        <b>Price:</b> $ {product.price * product.quantity}
+                      </ProductPrice>
                     </Details>
                   </ProductInfo>
-                  <Price>
-                    <Quantity>
-                      <ProductQuantity>{product.quantity}</ProductQuantity>
-                    </Quantity>
-                    <ProductPrice>
-                      $ {product.price * product.quantity}
-                    </ProductPrice>
-                  </Price>
                   <DeleteProduct>
                     <DeleteOutlinedIcon
                       onClick={() => handleRemove(product._id)}
@@ -310,8 +325,8 @@ const Cart = () => {
                 <SummaryPrice>$ {cart.total}</SummaryPrice>
               </SummaryItem>
               <SummaryItem>
-                <SummaryText>Estimated Shipping</SummaryText>
-                <SummaryPrice>$ 2</SummaryPrice>
+                <SummaryText>Shipping Fee</SummaryText>
+                <SummaryPrice>Free</SummaryPrice>
               </SummaryItem>
               <SummaryItem>
                 <SummaryText>Discount</SummaryText>
@@ -321,18 +336,30 @@ const Cart = () => {
                 <SummaryText>Total</SummaryText>
                 <SummaryPrice>$ {cart.total}</SummaryPrice>
               </SummaryItem>
-              <StripeCheckout
-                name="RAMA ECOM"
-                description={`Your total is ${cart.total}`}
-                amount={cart.total * 100}
-                billingAddress
-                token={onToken}
-                shippingAddress
-                image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLeqFAy5MP-HSA6P1-ERIzL-RV61tlji9O5j8NgJVRcp95EGMp-g9vgo0WcD8ZukxQlS4&usqp=CAU"
-                stripeKey={key}
-              >
-                <Button type="filled" onClick={handleCheckout}>CHECKOUT NOW</Button>
-              </StripeCheckout>
+              {user ? (
+                <>
+                  <StripeCheckout
+                    name="RAMA ECOM"
+                    description={`Your total is ${cart.total}`}
+                    amount={cart.total * 100}
+                    billingAddress
+                    token={onToken}
+                    shippingAddress
+                    image="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLeqFAy5MP-HSA6P1-ERIzL-RV61tlji9O5j8NgJVRcp95EGMp-g9vgo0WcD8ZukxQlS4&usqp=CAU"
+                    stripeKey={key}
+                  >
+                    <Button type="filled" onClick={handleCheckout}>
+                      CHECKOUT NOW
+                    </Button>
+                  </StripeCheckout>
+                </>
+              ) : (
+                <>
+                  <Button type="filled" onClick={handleLogin}>
+                    LoginIn to Checkout
+                  </Button>
+                </>
+              )}
             </Summary>
           </Bottom>
         )}
