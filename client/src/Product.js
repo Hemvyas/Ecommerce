@@ -100,6 +100,7 @@ border-radius:50%;
 background:${props=>props.color};
 margin:0px 5px;
 cursor:pointer;
+border:3px solid #000;
 `
 const FilterSize=styled.p`
 margin-left:10px;

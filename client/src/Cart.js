@@ -6,7 +6,7 @@ import styled from "styled-components";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { clearCart, removerFromCart } from "./redux/cartSlice";
+import { clearCart, removeFromCart } from "./redux/cartSlice";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import StripeCheckout from "react-stripe-checkout";
@@ -143,7 +143,7 @@ const SummaryItem = styled.div`
   display: flex;
   justify-content: space-between;
   font-weight: ${(props) => props.type === "total" && "500"};
-  font-size: ${(props) => props.type === "total" && "25px"};
+  font-size: ${(props) => props.type === "total" && "20px"};
 `;
 const DeleteProduct = styled.span`
   cursor: pointer;
@@ -251,7 +251,7 @@ const handleLogin=async()=>{
 
   const handleRemove = (productId) => {
     toast.success("Item Removed From Cart!", toastOptions);
-    dispatch(removerFromCart(productId));
+    dispatch(removeFromCart(productId));
   };
 
   const handleClear = () => {
@@ -274,6 +274,23 @@ const handleLogin=async()=>{
     draggable: true,
     theme: "dark",
   };
+
+  const cartTotal=cart.total;
+  let shippingFee=2;
+  let discount=0;
+  if(cartTotal>5000 && cartTotal<10000){
+    shippingFee=0;
+    discount=cartTotal*0.10;
+  }else if(cartTotal>10000){
+    shippingFee=0;
+    discount=cartTotal*0.20;
+  }
+  else{
+    shippingFee=2;
+    discount=0;
+  }
+
+  const total=cartTotal-discount+shippingFee;
 
   return (
     <Container>
@@ -333,19 +350,19 @@ const handleLogin=async()=>{
               <SummaryTitle>ORDER SUMMARY</SummaryTitle>
               <SummaryItem>
                 <SummaryText>Subtotal</SummaryText>
-                <SummaryPrice>$ {cart.total}</SummaryPrice>
+                <SummaryPrice>$ {cart.total.toFixed(2)}</SummaryPrice>
               </SummaryItem>
               <SummaryItem>
                 <SummaryText>Shipping Fee</SummaryText>
-                <SummaryPrice>Free</SummaryPrice>
+                <SummaryPrice>${shippingFee}</SummaryPrice>
               </SummaryItem>
               <SummaryItem>
                 <SummaryText>Discount</SummaryText>
-                <SummaryPrice>$ -10</SummaryPrice>
+                <SummaryPrice>$ -{discount.toFixed(2)}</SummaryPrice>
               </SummaryItem>
               <SummaryItem type="total">
                 <SummaryText>Total</SummaryText>
-                <SummaryPrice>$ {cart.total}</SummaryPrice>
+                <SummaryPrice>$ {total.toFixed(2)}</SummaryPrice>
               </SummaryItem>
               {user ? (
                 <>
@@ -367,7 +384,7 @@ const handleLogin=async()=>{
               ) : (
                 <>
                   <Button type="filled" onClick={handleLogin}>
-                    LoginIn to Checkout
+                    LogIn to Checkout
                   </Button>
                 </>
               )}
