@@ -11,6 +11,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import StripeCheckout from "react-stripe-checkout";
 import axios from "axios";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div``;
 const Wrapper = styled.div`
@@ -294,6 +295,13 @@ const handleLogin=async()=>{
 
   return (
     <Container>
+      <Helmet>
+        <title>Shopping bag | VogueVault</title>
+        <meta
+          name="description"
+          content="View and manage items in your cart."
+        />
+      </Helmet>
       <Navbar />
       <Announcement />
       <Wrapper>
@@ -329,8 +337,7 @@ const handleLogin=async()=>{
                         <b>Size:</b> {product.size}
                       </Size>
                       <Quantity>
-                        <b>Quantity:</b>{" "}
-                        {product.quantity}
+                        <b>Quantity:</b> {product.quantity}
                       </Quantity>
                       <ProductPrice>
                         <b>Price:</b> $ {product.price * product.quantity}

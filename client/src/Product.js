@@ -11,6 +11,7 @@ import axios from 'axios'
 import { addToCart } from './redux/cartSlice'
 import { useDispatch } from 'react-redux'
 import ProductItem from './components/ProductItem'
+import { Helmet } from "react-helmet-async";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const Container=styled.div`
@@ -286,6 +287,42 @@ const maxDesc=400;
 
   return (
     <Container>
+      <Helmet>
+        <title>
+          {product.title ? `${product.title} | VogueVault` : "VogueVault"}
+        </title>
+        <meta name="description" content="Description of the product page." />
+        <meta name="description" content={product.description} />
+        <meta property="og:title" content={`${product.name} | Voguevault`} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.imageUrl} />
+        <script type="application/ld+json">
+          {`
+            {
+              "@context": "http://schema.org",
+              "@type": "Product",
+              "name": "${product.title}",
+              "image": "${product.image}",
+              "description": "${product.description}",
+              "brand": {
+                "@type": "Brand",
+                "name": "Your Brand Name"
+              },
+              "offers": {
+                "@type": "Offer",
+                "priceCurrency": "USD",
+                "price": "${product.price}",
+                "itemCondition": "http://schema.org/NewCondition",
+                "availability": "http://schema.org/InStock",
+                "seller": {
+                  "@type": "Organization",
+                  "name": "Your Organization Name"
+                }
+              }
+            }
+          `}
+        </script>
+      </Helmet>
       <Navbar />
       <Announcement />
       <Wrapper>

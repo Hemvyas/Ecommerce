@@ -10,30 +10,34 @@ import Pay from './components/Pay';
 import { useSelector } from 'react-redux';
 import Success from './components/Succes';
 import Orders from './Order';
+import { HelmetProvider } from "react-helmet-async";
+
 
 function App() {
   const user=useSelector(state=>state.user.currentUser)
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/category/:id" element={<ProductList />} />
-          <Route path="/product/:id" element={<Product />} />
-          <Route
-            path="/login"
-            element={!user ? <Login /> : <Navigate to="/" />}
-          />
-          <Route
-            path="/register"
-            element={!user ? <Register /> : <Navigate to="/" />}
-          />
-          <Route path="/cart" element={<Cart />} />
-          <Route path="/pay" element={<Pay />} />
-          <Route path="/success" element={<Success />} />
-          <Route path="/orders" element={<Orders />} />
-        </Routes>
-      </BrowserRouter>
+      <HelmetProvider>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/category/:id" element={<ProductList />} />
+            <Route path="/product/:id" element={<Product />} />
+            <Route
+              path="/login"
+              element={!user ? <Login /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/register"
+              element={!user ? <Register /> : <Navigate to="/" />}
+            />
+            <Route path="/cart" element={<Cart />} />
+            <Route path="/pay" element={<Pay />} />
+            <Route path="/success" element={<Success />} />
+            <Route path="/orders" element={<Orders />} />
+          </Routes>
+        </BrowserRouter>
+      </HelmetProvider>
     </>
   );
 }

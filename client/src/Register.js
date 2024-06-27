@@ -4,6 +4,7 @@ import styled from "styled-components"
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {useNavigate} from "react-router-dom"
+import { Helmet } from 'react-helmet-async';
 
 const Container=styled.div`
 width:100vw;
@@ -119,38 +120,50 @@ const Register = () => {
 }
   return (
     <Container>
-        <Wrapper>
-            <Title>CREATE AN ACCOUNT</Title>
-            <FORM>
-                <Input placeholder ="username" 
-                type='text'
-                value={username} 
-                onChange={(e)=>setUsername(e.target.value)}
-                />
-                <Input placeholder ="email" 
-                type='email'
-                value={email} 
-                onChange={(e)=>setEmail(e.target.value)}
-                />
-                <Input placeholder ="password" 
-                type="password"
-                value={password} 
-                onChange={(e)=>setPassword(e.target.value)}
-                />
-                <Input placeholder ="confirmPassword" 
-                type="password"
-                value={confirmPassword} 
-                onChange={(e)=>setConfirmPassword(e.target.value)}
-                />
-                <Agreement>
-                    BY creating an account, I consent to the processing of my personal data in accordanace with the <b>PRIVACY POLICY</b>
-                </Agreement>
-                <BUTTON onClick={handleRegister}>REGISTER</BUTTON>
-            </FORM>
-        </Wrapper>
-        <ToastContainer/>
+      <Helmet>
+        <title>Register | VogueVault</title>
+        <meta
+          name="description"
+          content="Create a new account on Your Website Name."
+        />
+      </Helmet>
+      <Wrapper>
+        <Title>CREATE AN ACCOUNT</Title>
+        <FORM>
+          <Input
+            placeholder="username"
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <Input
+            placeholder="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            placeholder="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <Input
+            placeholder="confirmPassword"
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <Agreement>
+            BY creating an account, I consent to the processing of my personal
+            data in accordanace with the <b>PRIVACY POLICY</b>
+          </Agreement>
+          <BUTTON onClick={handleRegister}>REGISTER</BUTTON>
+        </FORM>
+      </Wrapper>
+      <ToastContainer />
     </Container>
-  )
+  );
 }
 
 export default Register

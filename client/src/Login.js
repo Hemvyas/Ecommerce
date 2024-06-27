@@ -5,6 +5,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useDispatch,useSelector } from 'react-redux'
 import { login } from './redux/login';
 import {Link} from "react-router-dom"
+import { Helmet } from 'react-helmet-async';
 const Container=styled.div`
 width:100vw;
 height:100vh;
@@ -114,30 +115,40 @@ const handleLogin = async (e) => {
 
   return (
     <Container>
-        <Wrapper>
-            <Title>SIGN IN</Title>
-            <FORM>
-                <Input placeholder ="email" 
-                type='email' 
-                value={email}
-                onChange={(e)=>setEmail(e.target.value)}
-                />
-                <Input placeholder ="password" 
-                type='password'
-                value={password} 
-                onChange={(e)=>setPassword(e.target.value)}
-                />
+      <Helmet>
+        <title>LogIn | VogueVault</title>
+        <meta name="description" content="Login to access your account." />
+      </Helmet>
+      <Wrapper>
+        <Title>SIGN IN</Title>
+        <FORM>
+          <Input
+            placeholder="email"
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <Input
+            placeholder="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
-                <BUTTON onClick={handleLogin} disabled={isLoggedIn}>LOGIN</BUTTON>
-                {error && <Error>Something went wrong!</Error>}
-                <Links>
-                <Link to="/register" style={{color:"inherit"}}>Create a New Account</Link>
-                </Links>
-            </FORM>
-        </Wrapper>
-        <ToastContainer/>
+          <BUTTON onClick={handleLogin} disabled={isLoggedIn}>
+            LOGIN
+          </BUTTON>
+          {error && <Error>Something went wrong!</Error>}
+          <Links>
+            <Link to="/register" style={{ color: "inherit" }}>
+              Create a New Account
+            </Link>
+          </Links>
+        </FORM>
+      </Wrapper>
+      <ToastContainer />
     </Container>
-  )
+  );
 }
 
 export default Login

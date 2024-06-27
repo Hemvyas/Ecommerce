@@ -11,6 +11,7 @@ import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutl
 import ArrowBackIosNewOutlinedIcon from '@mui/icons-material/ArrowBackIosNewOutlined';
 import { useSelector } from 'react-redux'
 import CircularProgress from "@mui/material/CircularProgress";
+import { Helmet } from 'react-helmet-async'
 
 
 const Container=styled.div`
@@ -157,6 +158,10 @@ const ProductList = () => {
 
     return (
       <Container>
+        <Helmet>
+          <title>{category} | VogueVault</title>
+          <meta name="description" content="Browse by Category." />
+        </Helmet>
         <Navbar />
         <Announcement />
         <Title>{category} Section</Title>
