@@ -169,7 +169,7 @@ const Product = () => {
   const [quantity,setQuantity]=useState(1);
    const [recomendedProducts,setRecommendedProducts]=useState([]);
    const [show, setShow] = useState(false);
-  const [likedProducts, setLikedProducts] = useState([]);
+  // const [likedProducts, setLikedProducts] = useState([]);
    const dispatch=useDispatch();
 
    const toastOptions={
@@ -182,8 +182,8 @@ const Product = () => {
     theme:"dark"
    }
 
-   const token=user.token;
-
+  //  const token=user.token;
+  //  const userId=user.other._id;
   useEffect(()=>{
     const fetchProduct=async()=>{
       try {
@@ -212,49 +212,60 @@ const Product = () => {
     recomend();
   }, [id])
 
-  // useEffect(() => {
-  //   const fetchLikedProducts = async () => {
-  //     try {
-  //       const res = await axios.get(
-  //         `http://localhost:5000/api/user/likes`
+
+// useEffect(() => {
+//   const fetchLikedProducts = async () => {
+//     try {
+//       const config = {
+//         headers: {
+//         "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`,
+//         },
+//       };
+
+//       const res = await axios.get(
+//         `https://ecommerce-brown-one.vercel.app/api/user/likes/${userId}`,
+//         config
+//       );
+//       setLikedProducts(res.data.likes);
+//       console.log(res.data);
+//     } catch (error) {
+//       console.error("Error fetching liked products:", error);
+//     }
+//   };
+
+//   fetchLikedProducts();
+// }, [userId, token]);
+
+  // const handleToggleLike = async () => {
+  //   try {
+  //     const config = {
+  //       headers: {
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //     };
+
+  //     if (likedProducts.includes(id)) {
+  //       const res = await axios.put(
+  //         `https://ecommerce-brown-one.vercel.app/api/user/dislike/${id}`,
+  //         {},
+  //         config
   //       );
-  //       setLikedProducts(res.data.likes);
-  //     } catch (error) {
-  //       console.log(error);
+  //       setLikedProducts(res.data.user.likes);
+  //       toast.info("Product removed from likes", toastOptions);
+  //     } else {
+  //       const res = await axios.put(
+  //         `https://ecommerce-brown-one.vercel.app/api/user/like/${id}`,
+  //         {},
+  //         config
+  //       );
+  //       setLikedProducts(res.data.user.likes);
+  //       toast.success("Product added to likes", toastOptions);
   //     }
-  //   };
-  //   fetchLikedProducts();
-  // }, []);
-
-  const handleToggleLike = async () => {
-    try {
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      if (likedProducts.includes(product._id)) {
-        const res = await axios.put(
-          `https://ecommerce-brown-one.vercel.app/api/user/dislike/${product._id}`,
-          {},
-          config
-        );
-        setLikedProducts(res.data.user.likes);
-        toast.info("Product removed from likes", toastOptions);
-      } else {
-        const res = await axios.put(
-          `https://ecommerce-brown-one.vercel.app/api/user/like/${product._id}`,
-          {},
-          config
-        );
-        setLikedProducts(res.data.user.likes);
-        toast.success("Product added to likes", toastOptions);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error("Error toggling like:", error);
+  //   }
+  // };
 
   const handleclick=()=>{
     toast.success("Item Added To Cart!!!",toastOptions);
@@ -317,11 +328,11 @@ const maxDesc=400;
               <AddOutlinedIcon onClick={() => handleQuantity("inc")} />
             </Quantity>
             <Button onClick={handleclick}>Add To Cart</Button>
-            <Button onClick={handleToggleLike}>
+            {/* <Button onClick={handleToggleLike}>
               {likedProducts.includes(product._id)
                 ? "Remove from Likes"
                 : "Add to Likes"}
-            </Button>
+            </Button> */}
           </AddContainer>
         </Info>
       </Wrapper>
