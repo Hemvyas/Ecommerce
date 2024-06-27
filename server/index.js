@@ -16,15 +16,11 @@ const stripeRoute=require("./routes/stripe")
 dotenv.config();
 
 
-const corsOptions = {
-  origin: ["http://localhost:3000", "https://voguevault-ecom.vercel.app"], // Add both local and deployed frontend origins
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true, // Allow cookies and other credentials
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+  })
+);
 app.use(express.json());
 app.use(cookieParser());
 app.use('/api/auth',authRoute);
