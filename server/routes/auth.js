@@ -29,7 +29,6 @@ router.post("/login", async (req, res) => {
     );
     if (!validPassword) return res.status(401).json("Wrong password");
 
-    // Create token
     const token = jwt.sign(
       { _id: user._id, isAdmin: user.isAdmin },
       process.env.SECRET,
@@ -42,6 +41,7 @@ router.post("/login", async (req, res) => {
     });
 
     const { password, ...other } = user._doc;
+    console.log("other",other);
     res.status(200).json({ other, token });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
