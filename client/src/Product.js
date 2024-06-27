@@ -9,7 +9,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { addToCart } from './redux/cartSlice'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import ProductItem from './components/ProductItem'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -111,7 +111,7 @@ const AddContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   width: 50%;
-  @media (max-width: 390px) {
+  @media (max-width: 580px) {
     width:100%;
   }
 `;
@@ -139,6 +139,8 @@ font-weight:500;
   background:#f4f6ff;
   color:teal;
   }
+@media(max-width:425px){
+}
 `
 const FilterSizeOption=styled.option`
 
@@ -163,7 +165,7 @@ text-decoration:underline;
 
 const Product = () => {
   const location=useLocation();
-    const user = useSelector((state) => state.user.currentUser);
+    // const user = useSelector((state) => state.user.currentUser);
   const id=location.pathname.split("/")[2];
   const [product,setProduct]=useState({});
   const [quantity,setQuantity]=useState(1);
