@@ -9,7 +9,7 @@ import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { useLocation } from 'react-router-dom'
 import axios from 'axios'
 import { addToCart } from './redux/cartSlice'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import ProductItem from './components/ProductItem'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -163,11 +163,13 @@ text-decoration:underline;
 
 const Product = () => {
   const location=useLocation();
+    const user = useSelector((state) => state.user.currentUser);
   const id=location.pathname.split("/")[2];
   const [product,setProduct]=useState({});
   const [quantity,setQuantity]=useState(1);
    const [recomendedProducts,setRecommendedProducts]=useState([]);
    const [show, setShow] = useState(false);
+  const [likedProducts, setLikedProducts] = useState([]);
    const dispatch=useDispatch();
 
    const toastOptions={
@@ -180,6 +182,7 @@ const Product = () => {
     theme:"dark"
    }
 
+   const token=user.token;
 
   useEffect(()=>{
     const fetchProduct=async()=>{
@@ -209,6 +212,50 @@ const Product = () => {
     recomend();
   }, [id])
 
+  // useEffect(() => {
+  //   const fetchLikedProducts = async () => {
+  //     try {
+  //       const res = await axios.get(
+  //         `http://localhost:5000/api/user/likes`
+  //       );
+  //       setLikedProducts(res.data.likes);
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
+  //   fetchLikedProducts();
+  // }, []);
+
+  const handleToggleLike = async () => {
+    try {
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      if (likedProducts.includes(product._id)) {
+        const res = await axios.put(
+          `https://ecommerce-brown-one.vercel.app/api/user/dislike/${product._id}`,
+          {},
+          config
+        );
+        setLikedProducts(res.data.user.likes);
+        toast.info("Product removed from likes", toastOptions);
+      } else {
+        const res = await axios.put(
+          `https://ecommerce-brown-one.vercel.app/api/user/like/${product._id}`,
+          {},
+          config
+        );
+        setLikedProducts(res.data.user.likes);
+        toast.success("Product added to likes", toastOptions);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleclick=()=>{
     toast.success("Item Added To Cart!!!",toastOptions);
     dispatch((addToCart({...product,quantity})))
@@ -226,71 +273,73 @@ const maxDesc=400;
 
   return (
     <Container>
-        <Navbar/>
-        <Announcement/>
-        <Wrapper>
-            <ImgContainer>
-              <Image src={product.mainImg}/>
-              <ColorImg className="colorImg" src={product.colorImg}/>
-            </ImgContainer>
-          <Info>
-            <Title>
-              {product.title}
-            </Title>
-            <Desc>
+      <Navbar />
+      <Announcement />
+      <Wrapper>
+        <ImgContainer>
+          <Image src={product.mainImg} />
+          <ColorImg className="colorImg" src={product.colorImg} />
+        </ImgContainer>
+        <Info>
+          <Title>{product.title}</Title>
+          <Desc>
             <h4>Description:</h4>
-            {product.desc?.length>maxDesc && !show ? `${product.desc?.substring(0,maxDesc)}...`:product.desc}
-            {product.desc?.length>maxDesc && (<Show onClick={()=>setShow(!show)}>{show?"Show Less":"Show More"}</Show>)}
-            </Desc>
-            <Types>
-         Type:{product.types}
-            </Types>
-            <Price>$ {product.price}</Price>
-            <FilterContainer>
-              <Filter>
-                <FilterTitle>Color</FilterTitle>
-                <FilterColor color={product.color} key={product.color} 
-                />
-              </Filter>
+            {product.desc?.length > maxDesc && !show
+              ? `${product.desc?.substring(0, maxDesc)}...`
+              : product.desc}
+            {product.desc?.length > maxDesc && (
+              <Show onClick={() => setShow(!show)}>
+                {show ? "Show Less" : "Show More"}
+              </Show>
+            )}
+          </Desc>
+          <Types>Type:{product.types}</Types>
+          <Price>$ {product.price}</Price>
+          <FilterContainer>
+            <Filter>
+              <FilterTitle>Color</FilterTitle>
+              <FilterColor color={product.color} key={product.color} />
+            </Filter>
 
-              <Filter>
-                <FilterTitle>Size</FilterTitle>
-                <FilterSize>
-                {product.size && <FilterSizeOption >{product.size}</FilterSizeOption>}
-                </FilterSize>
-              </Filter>
-            </FilterContainer>
-            <AddContainer>
-              <Quantity>
-                <RemoveOutlinedIcon onClick={()=>handleQuantity("dec")}/>
-                <Total>{quantity}</Total>
-                <AddOutlinedIcon onClick={()=>handleQuantity("inc")}/>                
-              </Quantity>
-              <Button onClick={handleclick}>Add To Cart</Button>
-            </AddContainer>
-          </Info>
-        </Wrapper>
+            <Filter>
+              <FilterTitle>Size</FilterTitle>
+              <FilterSize>
+                {product.size && (
+                  <FilterSizeOption>{product.size}</FilterSizeOption>
+                )}
+              </FilterSize>
+            </Filter>
+          </FilterContainer>
+          <AddContainer>
+            <Quantity>
+              <RemoveOutlinedIcon onClick={() => handleQuantity("dec")} />
+              <Total>{quantity}</Total>
+              <AddOutlinedIcon onClick={() => handleQuantity("inc")} />
+            </Quantity>
+            <Button onClick={handleclick}>Add To Cart</Button>
+            <Button onClick={handleToggleLike}>
+              {likedProducts.includes(product._id)
+                ? "Remove from Likes"
+                : "Add to Likes"}
+            </Button>
+          </AddContainer>
+        </Info>
+      </Wrapper>
 
-        <Recommendation>
-        <Title>
-          Recomended Products
-        </Title>
+      <Recommendation>
+        <Title>Recomended Products</Title>
         <Products>
-          {
-            recomendedProducts.map((item)=>{
-             return <ProductItem item={item} key={item.id}/>
-            })
-          }
+          {recomendedProducts.map((item) => {
+            return <ProductItem item={item} key={item.id} />;
+          })}
         </Products>
+      </Recommendation>
 
-        </Recommendation>
-        
-
-        <Newsletter/>
-        <Footer/>
-        <ToastContainer/>
+      <Newsletter />
+      <Footer />
+      <ToastContainer />
     </Container>
-  )
+  );
 }
 
 export default Product

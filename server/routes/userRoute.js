@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const { verifyToken } = require("../verifyToken");
 const User = require("../models/User");
+const mongoose = require("mongoose");
 
 //update User
 router.put('/:id', verifyToken, async (req, res) => {
@@ -81,8 +82,80 @@ router.get("/",verifyToken,async(req,res)=>{
       }
       })
 
-      //get user stats
 
+      //likeProduct
+router.put("/like/:productId", verifyToken, async (req, res) => {
+  const userId = req.user._id;
+  const productId = req.params.productId;
+
+  if (!mongoose.Types.ObjectId.isValid(productId)) {
+    return res.status(400).json({ message: "Invalid product ID" });
+  }
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $addToSet: { likes: productId } }, 
+      { new: true }
+    );
+
+    if (!updatedUser) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    res.status(200).json({
+      message: "Product added to favorites successfully.",
+      user: updatedUser,
+    });
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+
+//dislikeProduct
+router.put("/dislike/:productId",verifyToken,async(req,res)=>{
+    const userId = await User.findById(req.user._id);
+    const productId = req.params.productId;
+     if (!mongoose.Types.ObjectId.isValid(productId)) {
+       return res.status(400).json({ message: "Invalid product ID" });
+     }
+    try {
+      const updatedUser = await User.findByIdAndUpdate(
+        userId,
+        { $pull: { likes: productId } },
+        { new: true }
+      );
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found." });
+      }
+      res.status(200).json({
+        message: "Product added to favorites successfully.",
+        user: updatedUser,
+      });
+    } catch (error) {
+      res.status(500).json(error);
+    }
+})
+
+//getLikes
+router.get("/likes/:userId", verifyToken, async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    const likes = user.likes;
+    res.status(200).json({ likes });
+  } catch (error) {
+    console.error("Error fetching likes:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 
 module.exports = router;
+
