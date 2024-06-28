@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { clearCart } from "../redux/cartSlice";
+import { Helmet } from "react-helmet-async";
+
 
 const SuccessContainer = styled.div`
   display: flex;
@@ -58,6 +60,13 @@ console.log(paymentId, totalAmount, shippingAddress, shippingName);
 
   return (
     <SuccessContainer>
+      <Helmet>
+        <title>Payment | VogueVault</title>
+        <meta
+          name="description"
+          content="View and manage items in your cart."
+        />
+      </Helmet>
       <Title>Payment Success!</Title>
       <Info>Your Payment ID: {paymentId}</Info>
       <Info>Total Amount: ${totalAmount}</Info>
