@@ -21,8 +21,8 @@ const Title = styled.h1`
   font-weight: 300;
   text-align: center;
   @media (max-width: 370px) {
-    font-weight:200;
-    font-size:27px;
+    font-weight: 200;
+    font-size: 27px;
   }
 `;
 const Top = styled.div`
@@ -38,7 +38,7 @@ const Button = styled.button`
   background: ${(props) => (props.type === "filled" ? "black" : "transparent")};
   color: ${(props) => props.type === "filled" && "white"};
   @media (max-width: 370px) {
-    padding:8px;
+    padding: 8px;
   }
 `;
 const Content = styled.div``;
@@ -59,7 +59,7 @@ const Bottom = styled.div`
 const Info = styled.div`
   flex: 2;
   @media (max-width: 480px) {
-    padding:10px;
+    padding: 10px;
   }
 `;
 const Summary = styled.div`
@@ -112,7 +112,7 @@ const Details = styled.div`
     padding: 10px;
   }
   @media (max-width: 390px) {
-    font-size:16px;
+    font-size: 16px;
   }
   @media (max-width: 330px) {
     font-size: 12px;
@@ -127,14 +127,14 @@ const Hr = styled.hr`
   border: none;
   height: 1px;
   @media (max-width: 688px) {
-    display:none;
+    display: none;
   }
 `;
 const SummaryTitle = styled.h1`
   font-weight: 200;
   @media (max-width: 340px) {
-    font-weight:100;
-    font-size:30px;
+    font-weight: 100;
+    font-size: 30px;
   }
 `;
 const SummaryPrice = styled.span``;
@@ -171,10 +171,24 @@ const EmptyCartMessage = styled.div`
   padding: 50px 0;
 `;
 
+const LoadingOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+`;
+
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
   const user = useSelector((state) => state.user.currentUser);
   const [token, setToken] = useState(null);
+  const [loading, setLoading] = useState(false); // State for loading effect
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const key =
@@ -186,6 +200,7 @@ const Cart = () => {
   useEffect(() => {
     const req = async () => {
       try {
+        setLoading(true); // Start loading
         const res = await axios.post(
           "https://ecommerce-brown-one.vercel.app/api/stripe/payment",
           {
@@ -218,17 +233,21 @@ const Cart = () => {
       } catch (error) {
         console.log(error);
         toast.error("Failed to process payment. Please try again later.");
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
     token && cart.total >= 1 && req();
   }, [token, cart.total, navigate]);
 
-const handleLogin=async()=>{
-      navigate("/login");
-}
-  const handleCheckout=async()=>{
-    const token=user.token;
+  const handleLogin = async () => {
+    navigate("/login");
+  };
+
+  const handleCheckout = async () => {
+    const token = user.token;
     try {
+      setLoading(true); // Start loading
       const res = await axios.post(
         "https://ecommerce-brown-one.vercel.app/api/order",
         {
@@ -246,19 +265,25 @@ const handleLogin=async()=>{
       console.log(res.data);
       dispatch(clearCart());
     } catch (error) {
-       console.error("Error creating order:", error);
+      console.error("Error creating order:", error);
+    } finally {
+      setLoading(false); // Stop loading
     }
-  }
+  };
 
   const handleRemove = (productId) => {
+    setLoading(true); // Start loading
     toast.success("Item Removed From Cart!", toastOptions);
     dispatch(removeFromCart(productId));
+    setLoading(false); // Stop loading
   };
 
   const handleClear = () => {
     if (window.confirm("Are you sure want to clear the cart?")) {
+      setLoading(true); // Start loading
       toast.error("Your cart has been cleared.", toastOptions);
       dispatch(clearCart());
+      setLoading(false); // Stop loading
     }
   };
 
@@ -276,25 +301,29 @@ const handleLogin=async()=>{
     theme: "dark",
   };
 
-  const cartTotal=cart.total;
-  let shippingFee=2;
-  let discount=0;
-  if(cartTotal>5000 && cartTotal<10000){
-    shippingFee=0;
-    discount=cartTotal*0.10;
-  }else if(cartTotal>10000){
-    shippingFee=0;
-    discount=cartTotal*0.20;
-  }
-  else{
-    shippingFee=2;
-    discount=0;
+  const cartTotal = cart.total;
+  let shippingFee = 2;
+  let discount = 0;
+  if (cartTotal > 5000 && cartTotal < 10000) {
+    shippingFee = 0;
+    discount = cartTotal * 0.1;
+  } else if (cartTotal > 10000) {
+    shippingFee = 0;
+    discount = cartTotal * 0.2;
+  } else {
+    shippingFee = 2;
+    discount = 0;
   }
 
-  const total=cartTotal-discount+shippingFee;
+  const total = cartTotal - discount + shippingFee;
 
   return (
     <Container>
+      {loading && (
+        <LoadingOverlay>
+          <div>Loading...</div>
+        </LoadingOverlay>
+      )}
       <Helmet>
         <title>Shopping bag | VogueVault</title>
         <meta
